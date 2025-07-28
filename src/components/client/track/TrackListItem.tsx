@@ -2,26 +2,30 @@ import { colors, fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
+import { Entypo } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { Track, useActiveTrack } from "react-native-track-player";
 
 interface IProps {
-  track: {
-    title: string;
-    image: string;
-    artist: string;
-  };
+  track: Track;
+  onTrackSelect: (track: Track) => void;
 }
 
 const TrackListItem = (props: IProps) => {
-  const isActiveTrack = false;
+  const newTrack = {
+    ...props.track,
+    url: props.track.url.replace("localhost:3000", "10.0.2.2:3000"),
+  };
+
+  const isActiveTrack = useActiveTrack()?.url === newTrack.url;
 
   return (
-    <TouchableHighlight>
+    <TouchableHighlight onPress={() => props.onTrackSelect(props.track)}>
       <View style={styles.trackItemContainer}>
         <View>
           <FastImage
             source={{
-              uri: `${REACT_BACKEND_URL}/api/v1/images/track/${props.track.image}`,
+              uri: `${REACT_BACKEND_URL}/api/v1/images/track/${props.track.artwork}`,
               priority: FastImage.priority.normal,
             }}
             style={{
@@ -30,19 +34,22 @@ const TrackListItem = (props: IProps) => {
             }}
           />
         </View>
-        <View style={{ width: "100%" }}>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.trackTitleText,
-              color: isActiveTrack ? colors.primary : colors.text,
-            }}
-          >
-            {props.track.title}
-          </Text>
-          <Text numberOfLines={1} style={styles.trackArtistText}>
-            {props.track.artist}
-          </Text>
+        <View style={styles.trackInfoContainer}>
+          <View style={{ width: "100%" }}>
+            <Text
+              numberOfLines={1}
+              style={{
+                ...styles.trackTitleText,
+                color: isActiveTrack ? colors.primary : colors.text,
+              }}
+            >
+              {props.track.title}
+            </Text>
+            <Text numberOfLines={1} style={styles.trackArtistText}>
+              {props.track.artist}
+            </Text>
+          </View>
+          <Entypo name="dots-three-horizontal" size={20} color={colors.icon} />
         </View>
       </View>
     </TouchableHighlight>
@@ -72,6 +79,12 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 15,
     marginTop: 4,
+  },
+  trackInfoContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

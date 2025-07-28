@@ -48,3 +48,28 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+# Important config after install all dependency
+
+node_module/react-native-track-player/android/src/main/java/comdoublesymetry/trackplayer/service/MusicService.kt
+at line number 764
+
+# from this
+
+@mainthread
+override fun onBind(intent: Intent?): IBinder {
+return binder
+}
+
+# to this
+
+@mainthread
+override fun onBind(intent: Intent): IBinder {
+return binder
+}
+
+just remove the question maker ? after intent
+
+extra : in android/gradle.properties
+newArchEnabled=false
+make this false

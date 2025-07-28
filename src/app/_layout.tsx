@@ -1,16 +1,30 @@
 import LayoutApp from "@/components/share/LayoutApp";
 import { ScrollProvider } from "@/contexts/ScrollContext";
+import { useLogTrackPlayerState } from "@/hooks/useLogTrackPlayerState";
+import { useSetupTrackPlayer } from "@/hooks/useSetupTrackPlayer";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useCallback } from "react";
 import FlashMessage from "react-native-flash-message";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "redux/store";
 
+SplashScreen.preventAutoHideAsync();
+
 const RootLayout = () => {
+  const handleTrackPlayerLoaded = useCallback(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
+  useSetupTrackPlayer({
+    onLoad: handleTrackPlayerLoaded,
+  });
+
+  useLogTrackPlayerState();
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>

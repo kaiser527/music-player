@@ -1,4 +1,4 @@
-import { colors } from "@/constants/tokens";
+import { colors, fontSize } from "@/constants/tokens";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -46,7 +46,7 @@ const SearchInput = (props: IProps) => {
             : "100%",
         }}
       >
-        <Ionicons name="search" size={16} color={"grey"} />
+        <Ionicons name="search" size={fontSize.sm - 1} color={"grey"} />
         <TextInput
           style={styles.input}
           placeholderTextColor={"grey"}
@@ -68,7 +68,7 @@ const SearchInput = (props: IProps) => {
         <Text
           style={{
             ...styles.cancelText,
-            marginBottom: !props.isScrolled ? 15 : 4,
+            marginBottom: !props.isScrolled ? 15 : 3,
           }}
           onLayout={handleCancelTextLayout}
           onPress={() => props.setIsFocused(false)}
@@ -88,14 +88,14 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     color: colors.primary,
-    fontSize: 14.5,
+    fontSize: 15,
   },
   containerInput: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#1a1a1a",
     borderRadius: 8,
-    height: 33,
+    height: 34,
     marginTop: 8,
     paddingHorizontal: 10,
     flex: 1,
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     height: "100%",
     paddingVertical: 0,
+    fontSize: fontSize.sm - 1,
   },
 });
 

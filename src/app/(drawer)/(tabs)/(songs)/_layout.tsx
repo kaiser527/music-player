@@ -1,4 +1,4 @@
-import CustomHeader from "@/components/client/custom/CustomHeader";
+import CustomHeader from "@/components/share/custom/CustomHeader";
 import { useScroll } from "@/contexts/ScrollContext";
 import { defaultStyles } from "@/styles";
 import {

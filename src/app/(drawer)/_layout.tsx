@@ -1,4 +1,4 @@
-import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
+import CustomDrawerContent from "@/components/share/custom/CustomDrawerContent";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { callLogout } from "@/services/api";
 import { IUser } from "@/types/backend";
@@ -37,8 +37,7 @@ const DrawerLayout = () => {
       !isAuthenticated
     )
       return;
-    console.log("access", access_token);
-    console.log("refresh", refresh_token);
+
     if (access_token && refresh_token) dispatch(fetchAccount());
     else dispatch(setLogoutAction({}));
   };

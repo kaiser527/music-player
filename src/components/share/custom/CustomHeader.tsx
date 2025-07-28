@@ -21,7 +21,7 @@ const CustomHeader = (props: IProps) => {
     return (
       <Text
         style={{
-          fontSize: props.isScrolled ? fontSize.sm : fontSize.lg,
+          fontSize: props.isScrolled ? fontSize.sm + 1 : fontSize.lg + 1,
           color: colors.text,
           fontWeight: 500,
           alignSelf: props.isScrolled ? "center" : "flex-start",

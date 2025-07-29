@@ -1,5 +1,6 @@
 import CustomHeader from "@/components/share/custom/CustomHeader";
 import { useScroll } from "@/contexts/ScrollContext";
+import { useAppDispatch } from "@/redux/hooks";
 import { defaultStyles } from "@/styles";
 import {
   StackScreenWithSearchBar,
@@ -12,6 +13,13 @@ import { View } from "react-native";
 const SongsScreenLayout = () => {
   const { isScrolled } = useScroll();
 
+  const dispatch = useAppDispatch();
+
+  const handleChangInput = async (text: string) => {
+    const { handleChangeQuery } = await import("redux/slice/TrackSlice");
+    dispatch(handleChangeQuery(text));
+  };
+
   return (
     <View style={defaultStyles.container}>
       <Stack>
@@ -23,6 +31,7 @@ const SongsScreenLayout = () => {
               : StackScreenWithSearchBar),
             headerTitle: () => (
               <CustomHeader
+                handleChangInput={handleChangInput}
                 placeholder="Find in songs"
                 title="Songs"
                 isScrolled={isScrolled}

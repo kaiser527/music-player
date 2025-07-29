@@ -1,17 +1,13 @@
 import { REACT_BACKEND_URL } from "@/constants/utils";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useGetTrackData } from "@/hooks/useGetTrackData";
+import { useAppDispatch } from "@/redux/hooks";
 import { utilsStyles } from "@/styles";
-import { ITrack } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
 import React, { useEffect } from "react";
 import { FlatList, FlatListProps, Text, View } from "react-native";
 import TrackPlayer, { Track } from "react-native-track-player";
 import TrackListItem from "./TrackListItem";
 import TrackListSkeleton from "./TrackListSkeleton";
-
-type Props = Partial<FlatListProps<ITrack>> & {
-  track: Track;
-};
 
 const ItemDivider = () => {
   return (
@@ -25,10 +21,8 @@ const ItemDivider = () => {
   );
 };
 
-const TrackList = (props: Props) => {
-  const tracks: ITrack[] = useAppSelector((state) => state.track.data);
-  const isFetching: boolean = useAppSelector((state) => state.track.isFetching);
-  const query: string = useAppSelector((state) => state.track.query);
+const TrackList = (props: Partial<FlatListProps<Track>>) => {
+  const { tracks, isFetching, query } = useGetTrackData();
 
   const dispatch = useAppDispatch();
 
@@ -41,10 +35,18 @@ const TrackList = (props: Props) => {
     dispatch(fetchTrack(`pageSize=100&pageNumber=1&title=${query}`));
   };
 
-  const handleTrackSelect = async (track: Track) => {
-    const newUrl = track.url.replace("localhost:3000", "10.0.2.2:3000");
+  const handleTrackSelect = async (selectedTrack: Track) => {
+    const newUrl = selectedTrack.url.replace("localhost:3000", "10.0.2.2:3000");
+    const newTrack = { ...selectedTrack, url: newUrl };
+    const trackIndex = tracks.findIndex(
+      (item) => item.url === selectedTrack.url
+    );
 
-    await TrackPlayer.load({ ...track, url: newUrl });
+    if (trackIndex === -1) return;
+
+    console.log(trackIndex);
+
+    await TrackPlayer.load(newTrack);
     await TrackPlayer.play();
   };
 
@@ -57,7 +59,7 @@ const TrackList = (props: Props) => {
           data={tracks}
           ItemSeparatorComponent={ItemDivider}
           contentContainerStyle={{
-            paddingBottom: 73,
+            paddingBottom: 133,
           }}
           ListEmptyComponent={
             <View>

@@ -2,9 +2,10 @@ import { colors, fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import { Track, useActiveTrack } from "react-native-track-player";
+import LoaderKit from "react-native-loader-kit";
+import { Track, useActiveTrack, useIsPlaying } from "react-native-track-player";
 
 interface IProps {
   track: Track;
@@ -17,6 +18,7 @@ const TrackListItem = (props: IProps) => {
     url: props.track.url.replace("localhost:3000", "10.0.2.2:3000"),
   };
 
+  const { playing } = useIsPlaying();
   const isActiveTrack = useActiveTrack()?.url === newTrack.url;
 
   return (
@@ -33,6 +35,21 @@ const TrackListItem = (props: IProps) => {
               opacity: isActiveTrack ? 0.6 : 1,
             }}
           />
+          {isActiveTrack &&
+            (playing ? (
+              <LoaderKit
+                style={styles.trackPlayingIconIndicator}
+                name="LineScaleParty"
+                color={colors.icon}
+              />
+            ) : (
+              <Ionicons
+                style={styles.trackPausedIndicator}
+                name="play"
+                size={24}
+                color={colors.icon}
+              />
+            ))}
         </View>
         <View style={styles.trackInfoContainer}>
           <View style={{ width: "100%" }}>
@@ -85,6 +102,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  trackPlayingIconIndicator: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -8 }, { translateY: -8 }],
+    width: 18,
+    height: 18,
+  },
+  trackPausedIndicator: {
+    position: "absolute",
+    top: 18,
+    left: 18,
   },
 });
 

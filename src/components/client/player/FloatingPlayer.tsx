@@ -3,15 +3,11 @@ import { REACT_BACKEND_URL } from "@/constants/utils";
 import { useLastActiveTrack } from "@/hooks/useLastActiveTrack";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
+import { useRouter } from "expo-router";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useActiveTrack } from "react-native-track-player";
+import MovingText from "../MovingText";
 import { PlayerPauseButton, SkipToNextButton } from "./PlayerControls";
 
 interface IProps {
@@ -21,8 +17,13 @@ interface IProps {
 const FloatingPlayer = (props: IProps) => {
   const activeTrack = useActiveTrack();
   const lastActiveTrack = useLastActiveTrack();
+  const router = useRouter();
 
   const displayedTrack = activeTrack ?? lastActiveTrack;
+
+  const handlePress = () => {
+    router.push("/player");
+  };
 
   if (!displayedTrack) return null;
 
@@ -30,6 +31,7 @@ const FloatingPlayer = (props: IProps) => {
     <TouchableOpacity
       activeOpacity={0.9}
       style={[styles.container, props.style]}
+      onPress={handlePress}
     >
       <>
         <FastImage
@@ -39,7 +41,11 @@ const FloatingPlayer = (props: IProps) => {
           style={styles.trackArtworkImage}
         />
         <View style={styles.trackTitleContainer}>
-          <Text style={styles.trackTitle}>{displayedTrack.title}</Text>
+          <MovingText
+            animationThreshold={25}
+            style={styles.trackTitle}
+            text={displayedTrack.title ?? ""}
+          />
         </View>
         <View style={styles.trackControlsContainer}>
           <PlayerPauseButton iconSize={24} />

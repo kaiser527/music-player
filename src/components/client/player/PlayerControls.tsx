@@ -1,5 +1,5 @@
 import { colors } from "@/constants/tokens";
-import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import { TouchableOpacity, View, ViewStyle } from "react-native";
 import TrackPlayer, { useIsPlaying } from "react-native-track-player";
@@ -22,7 +22,7 @@ export const PlayerPauseButton = (props: IPlayerButtonProps) => {
         activeOpacity={0.85}
         onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
       >
-        <FontAwesome
+        <FontAwesome6
           name={playing ? "pause" : "play"}
           size={props.iconSize}
           color={colors.text}

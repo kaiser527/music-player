@@ -1,24 +1,19 @@
 import CustomDrawerContent from "@/components/share/custom/CustomDrawerContent";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { callLogout } from "@/services/api";
-import { IUser } from "@/types/backend";
+import { useGetAccount } from "@/hooks/useGetAccount";
+import { useAppDispatch } from "@/redux/hooks";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import React, { useEffect } from "react";
-import { showMessage } from "react-native-flash-message";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const DrawerLayout = () => {
   const dispatch = useAppDispatch();
 
-  const user: IUser = useAppSelector((state) => state.account.user);
-  const isAuthenticated: boolean = useAppSelector(
-    (state) => state.account.isAuthenticated
-  );
-  const pathname = usePathname();
+  const { user, isAuthenticated } = useGetAccount();
 
+  const pathname = usePathname();
   console.log(user);
 
   useEffect(() => {
@@ -42,26 +37,15 @@ const DrawerLayout = () => {
     else dispatch(setLogoutAction({}));
   };
 
-  const handleLogout = async () => {
-    await callLogout();
-    const { setLogoutAction } = await import("redux/slice/AccountSlice");
-    dispatch(setLogoutAction({}));
-    await AsyncStorage.removeItem("refresh_token");
-    showMessage({
-      message: "Logout success",
-      type: "success",
-    });
-  };
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
         drawerContent={(props) => (
           <CustomDrawerContent
             {...props}
-            handleLogout={handleLogout}
             user={user}
             isAuthenticated={isAuthenticated}
+            isAdmin={false}
           />
         )}
         screenOptions={{
@@ -75,6 +59,23 @@ const DrawerLayout = () => {
             title: "Home",
             drawerIcon: ({ color }) => (
               <FontAwesome name="home" size={20} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="(admin)"
+          options={{
+            headerShown: false,
+            drawerItemStyle: {
+              display:
+                isAuthenticated &&
+                (user.role.name === "ADMIN" || user.role.name === "TESTER")
+                  ? "flex"
+                  : "none",
+            },
+            title: "Admin",
+            drawerIcon: ({ color }) => (
+              <FontAwesome name="shield" size={20} color={color} />
             ),
           }}
         />

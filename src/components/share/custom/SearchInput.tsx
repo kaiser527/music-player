@@ -1,5 +1,4 @@
 import { colors, fontSize } from "@/constants/tokens";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
@@ -17,22 +16,14 @@ interface IProps {
   isScrolled: boolean;
   isFocused: boolean;
   setIsFocused: (v: boolean) => void;
+  handleChangInput: (v: string) => void;
 }
 
 const SearchInput = (props: IProps) => {
   const [cancelTextWidth, setCancelTextWidth] = useState(0);
 
-  const dispatch = useAppDispatch();
-
-  const query: string = useAppSelector((state) => state.track.query);
-
   const handleCancelTextLayout = (event: LayoutChangeEvent) => {
     setCancelTextWidth(event.nativeEvent.layout.width);
-  };
-
-  const handleChangInput = async (text: string) => {
-    const { handleChangeQuery } = await import("redux/slice/TrackSlice");
-    dispatch(handleChangeQuery(text));
   };
 
   return (
@@ -50,9 +41,8 @@ const SearchInput = (props: IProps) => {
         <TextInput
           style={styles.input}
           placeholderTextColor={"grey"}
-          onChangeText={handleChangInput}
+          onChangeText={props.handleChangInput}
           placeholder={props.placeholder}
-          value={query}
           onFocus={() => props.setIsFocused(true)}
         />
         {props.isFocused && (
@@ -60,7 +50,7 @@ const SearchInput = (props: IProps) => {
             name="xmark"
             size={16}
             color={"grey"}
-            onPress={() => handleChangInput("")}
+            onPress={() => props.handleChangInput("")}
           />
         )}
       </View>

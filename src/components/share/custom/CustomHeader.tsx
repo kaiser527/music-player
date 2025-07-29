@@ -10,6 +10,7 @@ interface IProps {
   isScrolled: boolean;
   title: string;
   placeholder: string;
+  handleChangInput: (v: string) => void;
 }
 
 const CustomHeader = (props: IProps) => {
@@ -63,6 +64,7 @@ const CustomHeader = (props: IProps) => {
         setIsFocused={setIsFocused}
         isScrolled={props.isScrolled}
         placeholder={props.placeholder}
+        handleChangInput={props.handleChangInput}
       />
     </View>
   );

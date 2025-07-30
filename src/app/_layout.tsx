@@ -47,15 +47,7 @@ const RootLayout = () => {
 const RootNavigation = () => (
   <Stack>
     <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-    <Stack.Screen
-      name="player"
-      options={{
-        presentation: "card",
-        gestureEnabled: true,
-        headerShown: false,
-        gestureDirection: "vertical",
-      }}
-    />
+    <Stack.Screen name="player" options={{ headerShown: false }} />
   </Stack>
 );
 

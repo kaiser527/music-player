@@ -13,9 +13,7 @@ export const ScrollProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    setTimeout(() => {
-      setIsScrolled(offsetY > 60);
-    }, 100);
+    setIsScrolled(offsetY > 60);
   };
 
   return (

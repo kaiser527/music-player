@@ -1,7 +1,7 @@
 import { colors } from "@/constants/tokens";
 import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
-import { TouchableOpacity, View, ViewStyle } from "react-native";
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import TrackPlayer, { useIsPlaying } from "react-native-track-player";
 
 interface IPlayerControlsProps {
@@ -12,6 +12,18 @@ interface IPlayerButtonProps {
   style?: ViewStyle;
   iconSize?: number;
 }
+
+export const PlayerControls = (props: IPlayerControlsProps) => {
+  return (
+    <View style={[styles.container, props.style]}>
+      <View style={styles.row}>
+        <SkipToPreviousButton />
+        <PlayerPauseButton />
+        <SkipToNextButton />
+      </View>
+    </View>
+  );
+};
 
 export const PlayerPauseButton = (props: IPlayerButtonProps) => {
   const { playing } = useIsPlaying();
@@ -24,7 +36,7 @@ export const PlayerPauseButton = (props: IPlayerButtonProps) => {
       >
         <FontAwesome6
           name={playing ? "pause" : "play"}
-          size={props.iconSize}
+          size={props.iconSize ?? 32}
           color={colors.text}
         />
       </TouchableOpacity>
@@ -47,7 +59,7 @@ export const SkipToNextButton = (props: IPlayerButtonProps) => {
   );
 };
 
-export const SkipToPrevious = (props: IPlayerButtonProps) => {
+export const SkipToPreviousButton = (props: IPlayerButtonProps) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -61,3 +73,14 @@ export const SkipToPrevious = (props: IPlayerButtonProps) => {
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  container: {
+    width: "100%",
+  },
+});

@@ -6,6 +6,7 @@ export const useGetAccount = () => {
   const isAuthenticated: boolean = useAppSelector(
     (state) => state.account.isAuthenticated
   );
+  const isLoading: boolean = useAppSelector((state) => state.account.isLoading);
 
-  return { user, isAuthenticated };
+  return { user, isAuthenticated, isLoading };
 };

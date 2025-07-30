@@ -1,7 +1,7 @@
 import CustomDrawerContent from "@/components/share/custom/CustomDrawerContent";
 import { useGetAccount } from "@/hooks/useGetAccount";
 import { useAppDispatch } from "@/redux/hooks";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
@@ -14,7 +14,6 @@ const DrawerLayout = () => {
   const { user, isAuthenticated } = useGetAccount();
 
   const pathname = usePathname();
-  console.log(user);
 
   useEffect(() => {
     fetchAccount();
@@ -75,7 +74,7 @@ const DrawerLayout = () => {
             },
             title: "Admin",
             drawerIcon: ({ color }) => (
-              <FontAwesome name="shield" size={20} color={color} />
+              <FontAwesome6 name="gear" size={20} color={color} />
             ),
           }}
         />

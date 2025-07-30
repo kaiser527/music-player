@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useActiveTrack } from "react-native-track-player";
-import MovingText from "../MovingText";
+import MovingText from "../../share/MovingText";
 import { PlayerPauseButton, SkipToNextButton } from "./PlayerControls";
 
 interface IProps {
@@ -22,7 +22,10 @@ const FloatingPlayer = (props: IProps) => {
   const displayedTrack = activeTrack ?? lastActiveTrack;
 
   const handlePress = () => {
-    router.push("/player");
+    router.push({
+      pathname: "/player",
+      params: { track: JSON.stringify(displayedTrack) },
+    });
   };
 
   if (!displayedTrack) return null;

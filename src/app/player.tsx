@@ -7,33 +7,47 @@ import MovingText from "@/components/share/MovingText";
 import { colors as clrs, fontSize, screenPadding } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { defaultStyles, utilsStyles } from "@/styles";
-import { ITrack } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
 import { FontAwesome } from "@expo/vector-icons";
 import { getAverageColor } from "@somesoap/react-native-image-palette";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ColorValue, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ColorValue,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { useActiveTrack } from "react-native-track-player";
 
 const PlayerScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
 
-  const { track } = useLocalSearchParams<{ track: string }>();
-  const parsedTrack: ITrack = JSON.parse(track ?? "{}");
-  const imageUrl = `${REACT_BACKEND_URL}/api/v1/images/track/${parsedTrack.artwork}`;
+  const track = useActiveTrack();
+  const imageUrl = track
+    ? `${REACT_BACKEND_URL}/api/v1/images/track/${track.artwork}`
+    : "";
 
   const [colors, setColors] = useState<ColorValue[]>(["transparent", "black"]);
 
   const isFavorite = false;
 
   useEffect(() => {
-    getImageColors();
-  }, []);
+    if (track) getImageColors();
+  }, [track]);
+
+  if (!track || !track.title) {
+    return (
+      <View style={[defaultStyles.container, { justifyContent: "center" }]}>
+        <ActivityIndicator color={clrs.icon} />
+      </View>
+    );
+  }
 
   const getImageColors = async () => {
     const image = imageUrl;
@@ -66,7 +80,7 @@ const PlayerScreen = () => {
                   <View style={styles.trackTitleContainer}>
                     <MovingText
                       animationThreshold={30}
-                      text={parsedTrack.title}
+                      text={track.title}
                       style={styles.trackTitleText}
                     />
                   </View>
@@ -82,7 +96,7 @@ const PlayerScreen = () => {
                   numberOfLines={1}
                   style={[styles.trackArtistTrack, { marginTop: 6 }]}
                 >
-                  {parsedTrack.user.username}
+                  {track.artist}
                 </Text>
               </View>
               <PlayerProgressBar style={{ marginTop: 32 }} />

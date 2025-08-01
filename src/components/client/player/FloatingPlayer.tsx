@@ -21,20 +21,13 @@ const FloatingPlayer = (props: IProps) => {
 
   const displayedTrack = activeTrack ?? lastActiveTrack;
 
-  const handlePress = () => {
-    router.push({
-      pathname: "/player",
-      params: { track: JSON.stringify(displayedTrack) },
-    });
-  };
-
   if (!displayedTrack) return null;
 
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={[styles.container, props.style]}
-      onPress={handlePress}
+      onPress={() => router.push("/player")}
     >
       <>
         <FastImage

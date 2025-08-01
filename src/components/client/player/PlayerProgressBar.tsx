@@ -44,11 +44,11 @@ const PlayerProgressBar = (props: IProps) => {
           await TrackPlayer.seekTo(value * duration);
         }}
         onSlidingComplete={async (value) => {
-          if (isSliding.value) return;
+          const seekTo = value * duration;
+
+          await TrackPlayer.seekTo(seekTo);
 
           isSliding.value = false;
-
-          await TrackPlayer.seekTo(value * duration);
         }}
       />
       <View style={styles.timeRow}>

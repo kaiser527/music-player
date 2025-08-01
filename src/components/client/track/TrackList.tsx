@@ -1,4 +1,5 @@
 import { REACT_BACKEND_URL } from "@/constants/utils";
+import { convertUrl } from "@/helpers/convertUrl";
 import { utilsStyles } from "@/styles";
 import { ITrack } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
@@ -28,17 +29,23 @@ const ItemDivider = () => {
 
 const TrackList = (props: Props) => {
   const handleTrackSelect = async (selectedTrack: Track) => {
-    const newUrl = selectedTrack.url.replace("localhost:3000", "10.0.2.2:3000");
-    const newTrack = { ...selectedTrack, url: newUrl };
-    const trackIndex = props.tracks.findIndex(
-      (item) => item.url === selectedTrack.url
-    );
+    const convertedTracks = props.tracks.map((track) => ({
+      url: convertUrl(track.url),
+      title: track.title,
+      artist: track.user.username,
+      artwork: track.artwork,
+    }));
 
+    const selectedUrl = convertUrl(selectedTrack.url);
+    const trackIndex = convertedTracks.findIndex(
+      (item) => item.url === selectedUrl
+    );
     if (trackIndex === -1) return;
 
-    console.log(trackIndex);
+    const trackQueue = await TrackPlayer.getQueue();
+    if (trackQueue.length === 0) await TrackPlayer.add(convertedTracks);
 
-    await TrackPlayer.load(newTrack);
+    await TrackPlayer.skip(trackIndex);
     await TrackPlayer.play();
   };
 

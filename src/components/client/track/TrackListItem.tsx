@@ -1,5 +1,6 @@
 import { colors, fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
+import { convertUrl } from "@/helpers/convertUrl";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
 import { Entypo, Ionicons } from "@expo/vector-icons";
@@ -15,7 +16,7 @@ interface IProps {
 const TrackListItem = (props: IProps) => {
   const newTrack = {
     ...props.track,
-    url: props.track.url.replace("localhost:3000", "10.0.2.2:3000"),
+    url: convertUrl(props.track.url),
   };
 
   const { playing } = useIsPlaying();

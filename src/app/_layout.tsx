@@ -7,6 +7,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback } from "react";
 import FlashMessage from "react-native-flash-message";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -26,21 +27,23 @@ const RootLayout = () => {
   useLogTrackPlayerState();
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <LayoutApp>
-          <ThemeProvider value={DarkTheme}>
-            <SafeAreaProvider>
-              <ScrollProvider>
-                <RootNavigation />
-                <StatusBar style="light" />
-                <FlashMessage position="bottom" />
-              </ScrollProvider>
-            </SafeAreaProvider>
-          </ThemeProvider>
-        </LayoutApp>
-      </PersistGate>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <LayoutApp>
+            <ThemeProvider value={DarkTheme}>
+              <SafeAreaProvider>
+                <ScrollProvider>
+                  <RootNavigation />
+                  <StatusBar style="light" />
+                  <FlashMessage position="bottom" />
+                </ScrollProvider>
+              </SafeAreaProvider>
+            </ThemeProvider>
+          </LayoutApp>
+        </PersistGate>
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 

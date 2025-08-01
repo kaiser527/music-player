@@ -1,4 +1,7 @@
 import { PlayerControls } from "@/components/client/player/PlayerControls";
+import PlayerProgressBar from "@/components/client/player/PlayerProgressBar";
+import PlayerRepeatToggle from "@/components/client/player/PlayerRepeatToggle";
+import PlayerVolumeBar from "@/components/client/player/PlayerVolumeBar";
 import BackToHomeIcon from "@/components/share/BackToHomeIcon";
 import MovingText from "@/components/share/MovingText";
 import { colors as clrs, fontSize, screenPadding } from "@/constants/tokens";
@@ -82,12 +85,12 @@ const PlayerScreen = () => {
                   {parsedTrack.user.username}
                 </Text>
               </View>
-              {/* <PlayerProgressBar style={{ marginTop: 32 }} /> */}
+              <PlayerProgressBar style={{ marginTop: 32 }} />
               <PlayerControls style={{ marginTop: 40 }} />
             </View>
-            {/* <PlayerVolumeBar style={{ marginTop:'auto',marginBottom: 30}} /> */}
+            <PlayerVolumeBar style={{ marginTop: "auto", marginBottom: 30 }} />
             <View style={utilsStyles.centeredRow}>
-              {/* <PlayerRepeatToggle size={30} style={{ marginBottom: 6}} /> */}
+              <PlayerRepeatToggle size={30} style={{ marginBottom: 6 }} />
             </View>
           </View>
         </View>

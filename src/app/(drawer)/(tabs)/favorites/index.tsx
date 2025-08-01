@@ -1,9 +1,33 @@
+import TrackList from "@/components/client/track/TrackList";
+import { screenPadding } from "@/constants/tokens";
+import { useScroll } from "@/contexts/ScrollContext";
+import { useGetFavoriteSlice } from "@/hooks/useGetFavoriteSlice";
 import { defaultStyles } from "@/styles";
 import React from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const FavoritesScreen = () => {
-  return <View style={defaultStyles.container}></View>;
+  const { tracks, filter } = useGetFavoriteSlice();
+
+  const { handleScroll } = useScroll();
+
+  return (
+    <View style={defaultStyles.container}>
+      <ScrollView
+        onScroll={handleScroll}
+        style={{ paddingHorizontal: screenPadding.horizontal }}
+      >
+        <TrackList
+          filter={filter}
+          tracks={tracks.filter((item) =>
+            filter ? item.title === filter : item
+          )}
+          isFetching={false}
+          scrollEnabled={false}
+        />
+      </ScrollView>
+    </View>
+  );
 };
 
 export default FavoritesScreen;

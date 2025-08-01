@@ -1,7 +1,7 @@
 import { colors, fontSize } from "@/constants/tokens";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   DimensionValue,
   LayoutChangeEvent,
@@ -26,6 +26,8 @@ const SearchInput = (props: IProps) => {
     setCancelTextWidth(event.nativeEvent.layout.width);
   };
 
+  const inputRef = useRef<TextInput>(null);
+
   return (
     <View style={styles.container}>
       <View
@@ -39,6 +41,7 @@ const SearchInput = (props: IProps) => {
       >
         <Ionicons name="search" size={fontSize.sm - 1} color={"grey"} />
         <TextInput
+          ref={inputRef}
           style={styles.input}
           placeholderTextColor={"grey"}
           onChangeText={props.handleChangInput}
@@ -50,7 +53,10 @@ const SearchInput = (props: IProps) => {
             name="xmark"
             size={16}
             color={"grey"}
-            onPress={() => props.handleChangInput("")}
+            onPress={() => {
+              inputRef.current?.clear();
+              props.handleChangInput("");
+            }}
           />
         )}
       </View>

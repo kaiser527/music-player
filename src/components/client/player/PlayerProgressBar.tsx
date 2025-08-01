@@ -1,9 +1,11 @@
+import { colors, fontSize } from "@/constants/tokens";
 import { formatSecondsToMinutes } from "@/helpers/miscellaneous";
+import { defaultStyles, utilsStyles } from "@/styles";
 import React from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { Slider } from "react-native-awesome-slider";
 import { useSharedValue } from "react-native-reanimated";
-import { useProgress } from "react-native-track-player";
+import TrackPlayer, { useProgress } from "react-native-track-player";
 
 interface IProps {
   style: ViewStyle;
@@ -15,7 +17,7 @@ const PlayerProgressBar = (props: IProps) => {
   const isSliding = useSharedValue(false);
   const progress = useSharedValue(0);
   const min = useSharedValue(0);
-  const max = useSharedValue(0);
+  const max = useSharedValue(1);
 
   const trackElapsedTime = formatSecondsToMinutes(position);
   const trackRemainingTime = formatSecondsToMinutes(duration - position);
@@ -26,11 +28,52 @@ const PlayerProgressBar = (props: IProps) => {
 
   return (
     <View style={props.style}>
-      <Slider maximumValue={max} minimumValue={min} progress={progress} />
+      <Slider
+        maximumValue={max}
+        minimumValue={min}
+        progress={progress}
+        containerStyle={utilsStyles.slider}
+        thumbWidth={0}
+        renderBubble={() => null}
+        theme={{
+          maximumTrackTintColor: colors.maximumTrackTintColor,
+          minimumTrackTintColor: colors.minimumTrackTintColor,
+        }}
+        onSlidingStart={() => (isSliding.value = true)}
+        onValueChange={async (value) => {
+          await TrackPlayer.seekTo(value * duration);
+        }}
+        onSlidingComplete={async (value) => {
+          if (isSliding.value) return;
+
+          isSliding.value = false;
+
+          await TrackPlayer.seekTo(value * duration);
+        }}
+      />
+      <View style={styles.timeRow}>
+        <Text style={styles.timeText}>{trackElapsedTime}</Text>
+        <Text style={styles.timeText}>-{trackRemainingTime}</Text>
+      </View>
     </View>
   );
 };
 
-export default PlayerProgressBar;
+const styles = StyleSheet.create({
+  timeRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    marginTop: 12,
+  },
+  timeText: {
+    ...defaultStyles.text,
+    color: colors.text,
+    opacity: 0.75,
+    fontSize: fontSize.xs + 1,
+    letterSpacing: 0.7,
+    fontWeight: 500,
+  },
+});
 
-const styles = StyleSheet.create({});
+export default PlayerProgressBar;

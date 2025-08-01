@@ -2,6 +2,7 @@ export const WHITELIST_REDUCER = [
   "account.isAuthenticated",
   "account.isRefreshToken",
   "account.user",
+  "favorite",
 ];
 
 export const REACT_BACKEND_URL = "http://10.0.2.2:3000";

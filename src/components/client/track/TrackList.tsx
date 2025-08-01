@@ -1,13 +1,18 @@
 import { REACT_BACKEND_URL } from "@/constants/utils";
-import { useGetTrackData } from "@/hooks/useGetTrackData";
-import { useAppDispatch } from "@/redux/hooks";
 import { utilsStyles } from "@/styles";
+import { ITrack } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
-import React, { useEffect } from "react";
+import React from "react";
 import { FlatList, FlatListProps, Text, View } from "react-native";
 import TrackPlayer, { Track } from "react-native-track-player";
 import TrackListItem from "./TrackListItem";
 import TrackListSkeleton from "./TrackListSkeleton";
+
+type Props = Partial<FlatListProps<Track>> & {
+  tracks: ITrack[];
+  isFetching: boolean;
+  filter?: string;
+};
 
 const ItemDivider = () => {
   return (
@@ -21,24 +26,11 @@ const ItemDivider = () => {
   );
 };
 
-const TrackList = (props: Partial<FlatListProps<Track>>) => {
-  const { tracks, isFetching, query } = useGetTrackData();
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    fetchListTrack();
-  }, [query]);
-
-  const fetchListTrack = async () => {
-    const { fetchTrack } = await import("@/redux/slice/TrackSlice");
-    dispatch(fetchTrack(`pageSize=100&pageNumber=1&title=${query}`));
-  };
-
+const TrackList = (props: Props) => {
   const handleTrackSelect = async (selectedTrack: Track) => {
     const newUrl = selectedTrack.url.replace("localhost:3000", "10.0.2.2:3000");
     const newTrack = { ...selectedTrack, url: newUrl };
-    const trackIndex = tracks.findIndex(
+    const trackIndex = props.tracks.findIndex(
       (item) => item.url === selectedTrack.url
     );
 
@@ -52,11 +44,11 @@ const TrackList = (props: Partial<FlatListProps<Track>>) => {
 
   return (
     <>
-      {isFetching ? (
+      {props.isFetching ? (
         <TrackListSkeleton />
       ) : (
         <FlatList
-          data={tracks}
+          data={props.tracks}
           ItemSeparatorComponent={ItemDivider}
           contentContainerStyle={{
             paddingBottom: 133,

@@ -18,11 +18,13 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import accountSlice from "./slice/AccountSlice";
+import favoriteSlice from "./slice/FavoriteSlice";
 import trackSlice from "./slice/TrackSlice";
 
 const rootReducer = combineSlices({
   account: accountSlice,
   track: trackSlice,
+  favorite: favoriteSlice,
 });
 
 const persistConfig = getPersistConfig({

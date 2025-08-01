@@ -6,7 +6,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import React, { useEffect } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const DrawerLayout = () => {
   const dispatch = useAppDispatch();
@@ -37,74 +36,72 @@ const DrawerLayout = () => {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer
-        drawerContent={(props) => (
-          <CustomDrawerContent
-            {...props}
-            user={user}
-            isAuthenticated={isAuthenticated}
-            isAdmin={false}
-          />
-        )}
-        screenOptions={{
-          drawerHideStatusBarOnOpen: true,
+    <Drawer
+      drawerContent={(props) => (
+        <CustomDrawerContent
+          {...props}
+          user={user}
+          isAuthenticated={isAuthenticated}
+          isAdmin={false}
+        />
+      )}
+      screenOptions={{
+        drawerHideStatusBarOnOpen: true,
+      }}
+    >
+      <Drawer.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+          title: "Home",
+          drawerIcon: ({ color }) => (
+            <FontAwesome name="home" size={20} color={color} />
+          ),
         }}
-      >
-        <Drawer.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-            title: "Home",
-            drawerIcon: ({ color }) => (
-              <FontAwesome name="home" size={20} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="(admin)"
-          options={{
-            headerShown: false,
-            drawerItemStyle: {
-              display:
-                isAuthenticated &&
-                (user.role.name === "ADMIN" || user.role.name === "TESTER")
-                  ? "flex"
-                  : "none",
-            },
-            title: "Admin",
-            drawerIcon: ({ color }) => (
-              <FontAwesome6 name="gear" size={20} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="auth/login"
-          options={{
-            headerShown: false,
-            drawerItemStyle: { display: isAuthenticated ? "none" : "flex" },
-            title: "Login",
-            drawerIcon: ({ color }) => (
-              <FontAwesome name="sign-in" size={20} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="auth/verify"
-          options={{
-            headerShown: false,
-            drawerItemStyle: { display: "none" },
-          }}
-        />
-        <Drawer.Screen
-          name="auth/register"
-          options={{
-            headerShown: false,
-            drawerItemStyle: { display: "none" },
-          }}
-        />
-      </Drawer>
-    </GestureHandlerRootView>
+      />
+      <Drawer.Screen
+        name="(admin)"
+        options={{
+          headerShown: false,
+          drawerItemStyle: {
+            display:
+              isAuthenticated &&
+              (user.role.name === "ADMIN" || user.role.name === "TESTER")
+                ? "flex"
+                : "none",
+          },
+          title: "Admin",
+          drawerIcon: ({ color }) => (
+            <FontAwesome6 name="gear" size={20} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="auth/login"
+        options={{
+          headerShown: false,
+          drawerItemStyle: { display: isAuthenticated ? "none" : "flex" },
+          title: "Login",
+          drawerIcon: ({ color }) => (
+            <FontAwesome name="sign-in" size={20} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="auth/verify"
+        options={{
+          headerShown: false,
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
+        name="auth/register"
+        options={{
+          headerShown: false,
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+    </Drawer>
   );
 };
 

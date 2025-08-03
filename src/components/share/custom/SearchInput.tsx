@@ -33,7 +33,7 @@ const SearchInput = (props: IProps) => {
       <View
         style={{
           ...styles.containerInput,
-          marginBottom: props.isScrolled ? 11 : 23,
+          marginBottom: props.isScrolled ? 12 : 20,
           width: props.isFocused
             ? (`calc(100% - ${cancelTextWidth}px)` as DimensionValue)
             : "100%",

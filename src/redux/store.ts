@@ -20,11 +20,13 @@ import {
 import accountSlice from "./slice/AccountSlice";
 import favoriteSlice from "./slice/FavoriteSlice";
 import trackSlice from "./slice/TrackSlice";
+import userSlice from "./slice/UserSlice";
 
 const rootReducer = combineSlices({
   account: accountSlice,
   track: trackSlice,
   favorite: favoriteSlice,
+  user: userSlice,
 });
 
 const persistConfig = getPersistConfig({

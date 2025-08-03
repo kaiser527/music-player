@@ -52,3 +52,11 @@ export const callFetchTrackById = (id: string) => {
   return axios.get<IBackendRes<ITrack>>(`/api/v1/track/${id}`);
 };
 //----------------------track----------------------//
+
+//----------------------user----------------------//
+export const callFetchArtist = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IUser>>>(
+    `/api/v1/user/artist?${query}`
+  );
+};
+//----------------------user----------------------//

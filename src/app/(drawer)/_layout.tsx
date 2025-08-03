@@ -59,23 +59,23 @@ const DrawerLayout = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="(admin)"
-        options={{
-          headerShown: false,
-          drawerItemStyle: {
-            display:
-              isAuthenticated &&
-              (user.role.name === "ADMIN" || user.role.name === "TESTER")
-                ? "flex"
-                : "none",
-          },
-          title: "Admin",
-          drawerIcon: ({ color }) => (
-            <FontAwesome6 name="gear" size={20} color={color} />
-          ),
-        }}
-      />
+      <Drawer.Protected
+        guard={
+          isAuthenticated &&
+          (user.role.name === "ADMIN" || user.role.name === "TESTER")
+        }
+      >
+        <Drawer.Screen
+          name="(admin)"
+          options={{
+            headerShown: false,
+            title: "Admin",
+            drawerIcon: ({ color }) => (
+              <FontAwesome6 name="gear" size={20} color={color} />
+            ),
+          }}
+        />
+      </Drawer.Protected>
       <Drawer.Screen
         name="auth/login"
         options={{

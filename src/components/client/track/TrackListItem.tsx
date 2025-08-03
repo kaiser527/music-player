@@ -1,6 +1,6 @@
 import { colors, fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
-import { convertUrl } from "@/helpers/convertUrl";
+import { convertUrl } from "@/helpers/convertTrack";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
 import { Entypo, Ionicons } from "@expo/vector-icons";

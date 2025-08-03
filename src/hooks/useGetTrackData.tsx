@@ -1,5 +1,6 @@
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ITrack } from "@/types/backend";
+import { useEffect } from "react";
 
 export const useGetTrackData = () => {
   const tracks: ITrack[] = useAppSelector((state) => state.track.data);
@@ -11,5 +12,16 @@ export const useGetTrackData = () => {
     totalPages: number;
   } = useAppSelector((state) => state.track.meta);
 
-  return { tracks, isFetching, query, meta };
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const fetchListTrack = async () => {
+      const { fetchTrack } = await import("@/redux/slice/TrackSlice");
+      dispatch(fetchTrack(`pageSize=100&pageNumber=1&title=${query}`));
+    };
+
+    fetchListTrack();
+  }, [query]);
+
+  return { tracks, isFetching, meta };
 };

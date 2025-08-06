@@ -1,5 +1,5 @@
 import { colors } from "@/constants/tokens";
-import { useTrackPlayerVolume } from "@/hooks/useTrackPlayerVolume";
+import { useTrackPlayerVolume } from "@/hooks/track/useTrackPlayerVolume";
 import { utilsStyles } from "@/styles";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";

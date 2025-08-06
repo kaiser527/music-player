@@ -1,7 +1,7 @@
 import LayoutApp from "@/components/share/LayoutApp";
 import { ScrollProvider } from "@/contexts/ScrollContext";
-import { useLogTrackPlayerState } from "@/hooks/useLogTrackPlayerState";
-import { useSetupTrackPlayer } from "@/hooks/useSetupTrackPlayer";
+import { useLogTrackPlayerState } from "@/hooks/track/useLogTrackPlayerState";
+import { useSetupTrackPlayer } from "@/hooks/track/useSetupTrackPlayer";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";

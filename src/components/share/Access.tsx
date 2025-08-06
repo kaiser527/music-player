@@ -1,5 +1,5 @@
 import { colors, fontSize } from "@/constants/tokens";
-import { useGetAccount } from "@/hooks/useGetAccount";
+import { useGetAccount } from "@/hooks/redux/useGetAccount";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 

@@ -1,6 +1,6 @@
 import { fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
-import { useLastActiveTrack } from "@/hooks/useLastActiveTrack";
+import { useLastActiveTrack } from "@/hooks/track/useLastActiveTrack";
 import { defaultStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
 import { useRouter } from "expo-router";

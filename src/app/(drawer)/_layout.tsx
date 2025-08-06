@@ -1,5 +1,5 @@
 import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
-import { useGetAccount } from "@/hooks/useGetAccount";
+import { useGetAccount } from "@/hooks/redux/useGetAccount";
 import { useAppDispatch } from "@/redux/hooks";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";

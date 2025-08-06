@@ -1,7 +1,7 @@
 import TrackList from "@/components/client/track/TrackList";
 import { screenPadding } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
-import { useGetTrackData } from "@/hooks/useGetTrackData";
+import { useGetTrackData } from "@/hooks/track/useGetTrackData";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { defaultStyles } from "@/styles";
 import React, { useRef } from "react";

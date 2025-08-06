@@ -1,7 +1,7 @@
 import TrackList from "@/components/client/track/TrackList";
 import { screenPadding } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
-import { useGetFavoriteSlice } from "@/hooks/useGetFavoriteSlice";
+import { useGetFavoriteSlice } from "@/hooks/redux/useGetFavoriteSlice";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { defaultStyles } from "@/styles";
 import React, { useRef } from "react";
@@ -28,7 +28,7 @@ const FavoritesScreen = () => {
         <TrackList
           filter={filter}
           tracks={tracks.filter((item) =>
-            filter ? item.title === filter : item
+            filter.length > 0 ? item.title.toLowerCase().includes(filter) : item
           )}
           isFetching={false}
           scrollEnabled={false}

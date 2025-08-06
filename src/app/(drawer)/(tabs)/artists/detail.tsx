@@ -1,4 +1,6 @@
+import ArtistTrackList from "@/components/client/artist/ArtistTrackList";
 import { screenPadding } from "@/constants/tokens";
+import { convertUrl } from "@/helpers/convertTrack";
 import { defaultStyles } from "@/styles";
 import { IUser } from "@/types/backend";
 import { useLocalSearchParams } from "expo-router";
@@ -15,7 +17,21 @@ const ArtistDetailScreen = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
-        {/* <ArtistTrackList artist={parsedArtist} /> */}
+        <ArtistTrackList
+          artist={{
+            ...parsedArtist,
+            track: parsedArtist.track.map(
+              (item) =>
+                ({
+                  ...item,
+                  url: convertUrl(item.url),
+                  user: {
+                    username: parsedArtist.username,
+                  },
+                } as any)
+            ),
+          }}
+        />
       </ScrollView>
     </View>
   );

@@ -3,6 +3,7 @@ import {
   StackScreenWithSearchBar,
   StackScreenWithSearchBarCollapse,
 } from "@/constants/layout";
+import { colors } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
 import { defaultStyles } from "@/styles";
@@ -37,6 +38,16 @@ const ArtistsScreenLayout = () => {
                 isScrolled={isScrolled}
               />
             ),
+          }}
+        />
+        <Stack.Screen
+          name="detail"
+          options={{
+            headerTintColor: colors.primary,
+            title: "Artists",
+            headerStyle: {
+              backgroundColor: colors.background,
+            },
           }}
         />
       </Stack>

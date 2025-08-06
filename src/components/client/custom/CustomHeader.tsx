@@ -18,27 +18,25 @@ const CustomHeader = (props: IProps) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const getTitleName = () => {
-    return (
-      <Text
-        style={{
-          fontSize: props.isScrolled ? fontSize.sm + 1 : fontSize.lg + 1,
-          color: colors.text,
-          fontWeight: 500,
-          alignSelf: props.isScrolled ? "center" : "flex-start",
-        }}
-      >
-        {props.title}
-      </Text>
-    );
-  };
+  const getTitleName = (
+    <Text
+      style={{
+        fontSize: props.isScrolled ? fontSize.sm + 1 : fontSize.lg + 1,
+        color: colors.text,
+        fontWeight: 500,
+        alignSelf: props.isScrolled ? "center" : "flex-start",
+      }}
+    >
+      {props.title}
+    </Text>
+  );
 
   return (
     <View>
       {!isFocused && (
         <>
           {props.isScrolled ? (
-            getTitleName()
+            getTitleName
           ) : (
             <View
               style={{
@@ -47,7 +45,7 @@ const CustomHeader = (props: IProps) => {
                 justifyContent: "space-between",
               }}
             >
-              {getTitleName()}
+              {getTitleName}
               <TouchableOpacity
                 onPress={() =>
                   navigation.dispatch(DrawerActions.toggleDrawer())

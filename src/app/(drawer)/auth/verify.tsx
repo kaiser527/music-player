@@ -1,4 +1,4 @@
-import BackToHomeIcon from "@/components/client/BackToHomeIcon";
+import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
 import {
@@ -115,7 +115,7 @@ const VerifyScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackToHomeIcon />
+      <BackToPreviousIcon />
       <View style={styles.main}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>

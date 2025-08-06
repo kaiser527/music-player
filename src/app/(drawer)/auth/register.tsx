@@ -1,4 +1,4 @@
-import BackToHomeIcon from "@/components/client/BackToHomeIcon";
+import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
 import { callRegister } from "@/services/api";
@@ -72,7 +72,7 @@ const RegisterScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackToHomeIcon />
+      <BackToPreviousIcon />
       <View style={styles.main}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Don't Have Account,</Text>

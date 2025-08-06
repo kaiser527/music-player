@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 
-const BackToHomeIcon = () => {
+const BackToPreviousIcon = () => {
   const router = useRouter();
 
   return (
@@ -13,7 +13,7 @@ const BackToHomeIcon = () => {
         styles.iconContainer,
         pressed && styles.iconPressed,
       ]}
-      onPress={() => router.replace("/")}
+      onPress={() => router.back()}
     >
       <Feather
         name="chevron-left"
@@ -24,7 +24,7 @@ const BackToHomeIcon = () => {
   );
 };
 
-export default BackToHomeIcon;
+export default BackToPreviousIcon;
 
 const styles = StyleSheet.create({
   iconContainer: {

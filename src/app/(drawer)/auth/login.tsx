@@ -1,4 +1,4 @@
-import BackToHomeIcon from "@/components/client/BackToHomeIcon";
+import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
 import { useAppDispatch } from "@/redux/hooks";
@@ -101,14 +101,14 @@ const LoginScreen = () => {
     } else
       showMessage({
         message: "Error occurred",
-        description: "You enter your email first",
+        description: "You must enter your email first",
         type: "danger",
       });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackToHomeIcon />
+      <BackToPreviousIcon />
       <View style={styles.main}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Hey,</Text>

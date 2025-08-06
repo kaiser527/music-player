@@ -1,9 +1,9 @@
-import BackToHomeIcon from "@/components/client/BackToHomeIcon";
 import MovingText from "@/components/client/MovingText";
 import { PlayerControls } from "@/components/client/player/PlayerControls";
 import PlayerProgressBar from "@/components/client/player/PlayerProgressBar";
 import PlayerRepeatToggle from "@/components/client/player/PlayerRepeatToggle";
 import PlayerVolumeBar from "@/components/client/player/PlayerVolumeBar";
+import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import { colors as clrs, fontSize, screenPadding } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { defaultStyles, utilsStyles } from "@/styles";
@@ -60,7 +60,7 @@ const PlayerScreen = () => {
   return (
     <LinearGradient style={styles.overlayContainer} colors={[...colors] as any}>
       <SafeAreaView style={{ flex: 1 }}>
-        <BackToHomeIcon />
+        <BackToPreviousIcon />
         <DismissPlayerSymbol />
         <View style={{ flex: 1, marginTop: top - 10, marginBottom: bottom }}>
           <View style={styles.artworkImageContainer}>

@@ -1,15 +1,8 @@
 import { colors, fontSize } from "@/constants/tokens";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useRef, useState } from "react";
-import {
-  DimensionValue,
-  LayoutChangeEvent,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import React, { useRef } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 
 interface IProps {
   placeholder: string;
@@ -20,12 +13,6 @@ interface IProps {
 }
 
 const SearchInput = (props: IProps) => {
-  const [cancelTextWidth, setCancelTextWidth] = useState(0);
-
-  const handleCancelTextLayout = (event: LayoutChangeEvent) => {
-    setCancelTextWidth(event.nativeEvent.layout.width);
-  };
-
   const inputRef = useRef<TextInput>(null);
 
   return (
@@ -34,9 +21,6 @@ const SearchInput = (props: IProps) => {
         style={{
           ...styles.containerInput,
           marginBottom: props.isScrolled ? 12 : 20,
-          width: props.isFocused
-            ? (`calc(100% - ${cancelTextWidth}px)` as DimensionValue)
-            : "100%",
         }}
       >
         <Ionicons name="search" size={fontSize.sm - 1} color={"grey"} />
@@ -64,9 +48,8 @@ const SearchInput = (props: IProps) => {
         <Text
           style={{
             ...styles.cancelText,
-            marginBottom: !props.isScrolled ? 15 : 3,
+            marginBottom: !props.isScrolled ? 11.5 : 3.5,
           }}
-          onLayout={handleCancelTextLayout}
           onPress={() => props.setIsFocused(false)}
         >
           Cancel

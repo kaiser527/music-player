@@ -29,6 +29,7 @@ interface IState {
   data: ITrack[];
   singleTrack: ITrack;
   query: string;
+  filterArtistTrack: string;
 }
 
 const initialState: IState = {
@@ -53,6 +54,7 @@ const initialState: IState = {
     },
   },
   query: "",
+  filterArtistTrack: "",
 };
 
 const trackSlice = createSlice({
@@ -61,6 +63,9 @@ const trackSlice = createSlice({
   reducers: {
     handleChangeQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
+    },
+    handleChangeFilterArtistTrack: (state, action: PayloadAction<string>) => {
+      state.filterArtistTrack = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -121,6 +126,7 @@ const trackSlice = createSlice({
   },
 });
 
-export const { handleChangeQuery } = trackSlice.actions;
+export const { handleChangeQuery, handleChangeFilterArtistTrack } =
+  trackSlice.actions;
 
 export default trackSlice.reducer;

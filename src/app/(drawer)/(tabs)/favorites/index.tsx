@@ -21,6 +21,8 @@ const FavoritesScreen = () => {
       <ScrollView
         ref={scrollRef}
         onScroll={handleScroll}
+        decelerationRate="fast"
+        contentInsetAdjustmentBehavior="automatic"
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
         <TrackList

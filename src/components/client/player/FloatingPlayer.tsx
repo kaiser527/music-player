@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useActiveTrack } from "react-native-track-player";
-import MovingText from "../../share/MovingText";
+import MovingText from "../MovingText";
 import { PlayerPauseButton, SkipToNextButton } from "./PlayerControls";
 
 interface IProps {

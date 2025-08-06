@@ -1,4 +1,4 @@
-import BackToHomeIcon from "@/components/share/BackToHomeIcon";
+import BackToHomeIcon from "@/components/client/BackToHomeIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
 import {

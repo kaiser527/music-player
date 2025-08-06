@@ -1,10 +1,9 @@
-import { REACT_BACKEND_URL } from "@/constants/utils";
+import ItemDivider from "@/components/client/ItemSeparator";
+import ListEmpty from "@/components/client/ListEmpty";
 import { convertTrack, convertUrl } from "@/helpers/convertTrack";
-import { utilsStyles } from "@/styles";
 import { ITrack } from "@/types/backend";
-import FastImage from "@d11/react-native-fast-image";
 import React from "react";
-import { FlatList, FlatListProps, Text, View } from "react-native";
+import { FlatList, FlatListProps } from "react-native";
 import TrackPlayer, { Track } from "react-native-track-player";
 import QueueControls from "../queue/QueueControls";
 import TrackListItem from "./TrackListItem";
@@ -15,18 +14,6 @@ type Props = Partial<FlatListProps<Track>> & {
   isFetching: boolean;
   filter?: string;
   hideQueueControls?: boolean;
-};
-
-const ItemDivider = () => {
-  return (
-    <View
-      style={{
-        ...utilsStyles.itemSeparator,
-        marginVertical: 9,
-        marginLeft: 60,
-      }}
-    />
-  );
 };
 
 const TrackList = (props: Props) => {
@@ -55,7 +42,9 @@ const TrackList = (props: Props) => {
         <FlatList
           keyExtractor={(item) => item.id}
           data={props.tracks}
-          ItemSeparatorComponent={ItemDivider}
+          ItemSeparatorComponent={() => (
+            <ItemDivider marginLeft={60} marginVertical={9} />
+          )}
           ListHeaderComponent={
             <>
               {!props.hideQueueControls && (
@@ -69,17 +58,9 @@ const TrackList = (props: Props) => {
           contentContainerStyle={{
             paddingBottom: 133,
           }}
-          ListEmptyComponent={
-            <View>
-              <Text style={utilsStyles.emptyContentText}>No songs found</Text>
-              <FastImage
-                source={{
-                  uri: `${REACT_BACKEND_URL}/api/v1/images/track/unknown_track.png`,
-                }}
-                style={utilsStyles.emptyContentImage}
-              />
-            </View>
-          }
+          ListEmptyComponent={() => (
+            <ListEmpty text="No songs found" screen="TRACK" />
+          )}
           renderItem={({ item }) => (
             <TrackListItem
               onTrackSelect={() => handleTrackSelect(item)}

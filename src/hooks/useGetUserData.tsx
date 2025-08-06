@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { IUser } from "@/types/backend";
 import { useEffect } from "react";
 
-enum EUser {
+export enum EUser {
   ARTIST,
   USER,
 }

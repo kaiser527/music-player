@@ -1,4 +1,4 @@
-import CustomDrawerContent from "@/components/share/custom/CustomDrawerContent";
+import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
 import { useGetAccount } from "@/hooks/useGetAccount";
 import { useAppDispatch } from "@/redux/hooks";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";

@@ -1,9 +1,9 @@
+import BackToHomeIcon from "@/components/client/BackToHomeIcon";
+import MovingText from "@/components/client/MovingText";
 import { PlayerControls } from "@/components/client/player/PlayerControls";
 import PlayerProgressBar from "@/components/client/player/PlayerProgressBar";
 import PlayerRepeatToggle from "@/components/client/player/PlayerRepeatToggle";
 import PlayerVolumeBar from "@/components/client/player/PlayerVolumeBar";
-import BackToHomeIcon from "@/components/share/BackToHomeIcon";
-import MovingText from "@/components/share/MovingText";
 import { colors as clrs, fontSize, screenPadding } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { defaultStyles, utilsStyles } from "@/styles";

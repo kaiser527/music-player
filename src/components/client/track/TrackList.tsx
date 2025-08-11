@@ -5,7 +5,7 @@ import { ITrack } from "@/types/backend";
 import React from "react";
 import { FlatList, FlatListProps } from "react-native";
 import TrackPlayer, { Track } from "react-native-track-player";
-import QueueControls from "../queue/QueueControls";
+import QueueControls from "../QueueControls";
 import TrackListItem from "./TrackListItem";
 import TrackListSkeleton from "./TrackListSkeleton";
 

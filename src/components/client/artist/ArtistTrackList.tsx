@@ -6,7 +6,7 @@ import FastImage from "@d11/react-native-fast-image";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SearchInput from "../custom/SearchInput";
-import QueueControls from "../queue/QueueControls";
+import QueueControls from "../QueueControls";
 import TrackList from "../track/TrackList";
 
 interface IProps {

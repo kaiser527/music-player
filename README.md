@@ -70,6 +70,8 @@ return binder
 
 just remove the question maker ? after intent
 
-extra : in android/gradle.properties
+# extra
+
+in android/gradle.properties
 newArchEnabled=false
 make this false

@@ -19,6 +19,7 @@ import {
 } from "redux-persist";
 import accountSlice from "./slice/AccountSlice";
 import favoriteSlice from "./slice/FavoriteSlice";
+import playlistSlice from "./slice/PlaylistSlice";
 import trackSlice from "./slice/TrackSlice";
 import userSlice from "./slice/UserSlice";
 
@@ -27,6 +28,7 @@ const rootReducer = combineSlices({
   track: trackSlice,
   favorite: favoriteSlice,
   user: userSlice,
+  playlist: playlistSlice,
 });
 
 const persistConfig = getPersistConfig({

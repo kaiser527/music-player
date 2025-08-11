@@ -1,7 +1,7 @@
 import { fontSize } from "@/constants/tokens";
-import { REACT_BACKEND_URL } from "@/constants/utils";
+import { REACT_BACKEND_URL, unKnownTrackImage } from "@/constants/utils";
 import { defaultStyles } from "@/styles";
-import { IUser } from "@/types/backend";
+import { IPlaylist } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -10,10 +10,10 @@ import QueueControls from "../queue/QueueControls";
 import TrackList from "../track/TrackList";
 
 interface IProps {
-  artist: IUser;
+  playlist: IPlaylist;
 }
 
-const ArtistTrackList = (props: IProps) => {
+const PlaylistTrackList = (props: IProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -28,30 +28,33 @@ const ArtistTrackList = (props: IProps) => {
       />
       <TrackList
         isFetching={false}
-        tracks={props.artist.track.filter((item) =>
+        tracks={props.playlist.track.filter((item) =>
           search.length > 0 ? item.title.toLowerCase().includes(search) : item
         )}
         scrollEnabled={false}
-        ListHeaderComponentStyle={styles.artistHeaderContainer}
+        ListHeaderComponentStyle={styles.playlistHeaderContainer}
         hideQueueControls
         ListHeaderComponent={
           <View>
             <View style={styles.artworkImageContainer}>
               <FastImage
                 source={{
-                  uri: `${REACT_BACKEND_URL}/api/v1/images/user/${props.artist.image}`,
-                  priority: FastImage.priority.normal,
+                  uri:
+                    props.playlist.track.length > 0
+                      ? `${REACT_BACKEND_URL}/api/v1/images/track/${props.playlist.track[0]?.artwork}`
+                      : unKnownTrackImage,
+                  priority: FastImage.priority.high,
                 }}
-                style={styles.artistImage}
+                style={styles.artworkImage}
               />
             </View>
-            <Text numberOfLines={1} style={styles.artistNameText}>
-              {props.artist.username}
+            <Text numberOfLines={1} style={styles.playlistNameText}>
+              {props.playlist.name}
             </Text>
-            {search.length === 0 && props.artist.track.length > 0 && (
+            {search.length === 0 && props.playlist.track.length > 0 && (
               <QueueControls
-                tracks={props.artist.track}
                 style={{ paddingTop: 24 }}
+                tracks={props.playlist.track}
               />
             )}
           </View>
@@ -62,22 +65,22 @@ const ArtistTrackList = (props: IProps) => {
 };
 
 const styles = StyleSheet.create({
-  artistHeaderContainer: {
+  playlistHeaderContainer: {
     flex: 1,
     marginBottom: 32,
   },
   artworkImageContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    height: 200,
+    height: 300,
   },
-  artistImage: {
-    width: "60%",
+  artworkImage: {
+    width: "85%",
     height: "100%",
     resizeMode: "cover",
-    borderRadius: 128,
+    borderRadius: 12,
   },
-  artistNameText: {
+  playlistNameText: {
     ...defaultStyles.text,
     marginTop: 22,
     textAlign: "center",
@@ -86,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ArtistTrackList;
+export default PlaylistTrackList;

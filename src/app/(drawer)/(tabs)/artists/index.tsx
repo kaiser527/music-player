@@ -1,8 +1,8 @@
 import ArtistList from "@/components/client/artist/ArtistList";
 import { screenPadding } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
-import { EUser, useGetUserData } from "@/hooks/redux/useGetUserData";
-import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { EUser, useGetUserData } from "@/hooks/data/useGetUserData";
+import { useScrollToTop } from "@/hooks/layout/useScrollToTop";
 import { defaultStyles } from "@/styles";
 import React, { useRef } from "react";
 import { ScrollView, View } from "react-native";

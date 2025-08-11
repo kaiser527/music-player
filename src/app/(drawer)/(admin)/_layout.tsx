@@ -1,5 +1,5 @@
 import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
-import { useGetAccount } from "@/hooks/redux/useGetAccount";
+import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { FontAwesome } from "@expo/vector-icons";
 import Drawer from "expo-router/drawer";
 

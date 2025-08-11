@@ -1,8 +1,8 @@
 import TrackList from "@/components/client/track/TrackList";
 import { screenPadding } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
-import { useGetFavoriteSlice } from "@/hooks/redux/useGetFavoriteSlice";
-import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
+import { useScrollToTop } from "@/hooks/layout/useScrollToTop";
 import { defaultStyles } from "@/styles";
 import React, { useRef } from "react";
 import { ScrollView, View } from "react-native";

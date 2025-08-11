@@ -30,7 +30,6 @@ export interface IUser {
   accountType?: string;
   role: IRole;
   track: ITrack[];
-  playlist: IPlaylist[];
 }
 
 export interface IRole {
@@ -74,6 +73,13 @@ export interface IPlaylist {
   updatedAt?: string;
   name: string;
   track: ITrack[];
+  isChecked?: boolean;
+  user?: {
+    id: string;
+    email: string;
+    username: string;
+    image: string;
+  };
 }
 
 export interface IRegister {

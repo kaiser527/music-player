@@ -21,6 +21,10 @@ const QueueControls = (props: IProps) => {
   const handlePlay = async () => {
     const trackQueue = await TrackPlayer.getQueue();
 
+    if (trackQueue.length === 1) {
+      await TrackPlayer.setQueue(props.tracks);
+    }
+
     if (trackQueue.length === 0 || props.tracks.length !== trackQueue.length) {
       await TrackPlayer.setQueue(props.tracks);
     }
@@ -35,6 +39,10 @@ const QueueControls = (props: IProps) => {
     const shuffleTracks = _.cloneDeep(props.tracks).sort(
       () => Math.random() - 0.5
     );
+
+    if (trackQueue.length === 1) {
+      await TrackPlayer.setQueue(props.tracks);
+    }
 
     if (trackQueue.length === 0 || props.tracks.length !== trackQueue.length) {
       await TrackPlayer.setQueue(props.tracks);

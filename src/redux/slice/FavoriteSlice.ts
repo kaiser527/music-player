@@ -18,11 +18,11 @@ const favoriteSlice = createSlice({
     handleChangeFilter: (state, action: PayloadAction<string>) => {
       state.filter = action.payload;
     },
-    handleAddFavorite: (state, action: PayloadAction<ITrack>) => {
+    handleAddTrack: (state, action: PayloadAction<ITrack>) => {
       const index = state.track.findIndex(
         (item) => item.id === action.payload.id
       );
-      if (index > -1) {
+      if (index === -1) {
         state.track.push(action.payload);
       }
     },
@@ -37,7 +37,7 @@ const favoriteSlice = createSlice({
   },
 });
 
-export const { handleChangeFilter, handleAddFavorite, handleRemoveTrack } =
+export const { handleChangeFilter, handleAddTrack, handleRemoveTrack } =
   favoriteSlice.actions;
 
 export default favoriteSlice.reducer;

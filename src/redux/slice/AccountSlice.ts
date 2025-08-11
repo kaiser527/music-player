@@ -31,7 +31,6 @@ const user = {
     permission: [],
   },
   track: [],
-  playlist: [],
 };
 
 const initialState: IState = {
@@ -57,7 +56,6 @@ const accountSlice = createSlice({
       state.user.role = action?.payload?.role;
       state.user.role.permission = action?.payload?.role?.permission;
       state.user.track = action?.payload?.track;
-      state.user.playlist = action?.payload?.playlist;
     },
     setLogoutAction: (state, action) => {
       AsyncStorage.removeItem("access_token");
@@ -93,7 +91,6 @@ const accountSlice = createSlice({
         state.user.role = action?.payload?.user?.role;
         state.user.role.permission = action?.payload?.user?.role?.permission;
         state.user.track = action?.payload?.user?.track;
-        state.user.playlist = action?.payload?.user?.playlist;
       }
     });
 

@@ -1,0 +1,109 @@
+import { callFetchGlobalPlaylist, callFetchUserPlaylist } from "@/services/api";
+import { IPlaylist } from "@/types/backend";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export const fetchGlobalPlaylist = createAsyncThunk(
+  "playlist/fetchGlobalPlaylist",
+  async () => {
+    const response = await callFetchGlobalPlaylist();
+    return response;
+  }
+);
+
+export const fetchUserPlaylist = createAsyncThunk(
+  "playlist/fetchUserPlaylist",
+  async (query: string) => {
+    const response = await callFetchUserPlaylist(query);
+    return response;
+  }
+);
+
+interface IState {
+  isFetchingGlobal: boolean;
+  isFetchingUser: boolean;
+  globalPlaylist: IPlaylist[];
+  userPlaylist: IPlaylist[];
+  metaUser: {
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+  };
+  query: string;
+  modalVisible: boolean;
+  isDelete: boolean;
+  deletePlaylistIds: string[];
+}
+
+const initialState: IState = {
+  isFetchingGlobal: true,
+  isFetchingUser: true,
+  globalPlaylist: [],
+  userPlaylist: [],
+  query: "",
+  metaUser: {
+    pageNumber: 0,
+    pageSize: 0,
+    totalPages: 0,
+  },
+  modalVisible: false,
+  isDelete: false,
+  deletePlaylistIds: [],
+};
+
+const playlistSlice = createSlice({
+  name: "playlist",
+  initialState,
+  reducers: {
+    handleChangeQuery: (state, action: PayloadAction<string>) => {
+      state.query = action.payload;
+    },
+    setModalVisible: (state, action: PayloadAction<boolean>) => {
+      state.modalVisible = action.payload;
+    },
+    setIsDelete: (state, action: PayloadAction<boolean>) => {
+      state.isDelete = action.payload;
+    },
+    setDeletePlaylistIds: (state, action: PayloadAction<string[]>) => {
+      state.deletePlaylistIds = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchGlobalPlaylist.pending, (state, action) => {
+      state.isFetchingGlobal = true;
+    });
+
+    builder.addCase(fetchGlobalPlaylist.rejected, (state, action) => {
+      state.isFetchingGlobal = false;
+    });
+
+    builder.addCase(fetchGlobalPlaylist.fulfilled, (state, action) => {
+      state.isFetchingGlobal = false;
+      state.globalPlaylist = action.payload.result;
+    });
+
+    builder.addCase(fetchUserPlaylist.pending, (state, action) => {
+      state.isFetchingUser = true;
+    });
+
+    builder.addCase(fetchUserPlaylist.rejected, (state, action) => {
+      state.isFetchingUser = false;
+    });
+
+    builder.addCase(fetchUserPlaylist.fulfilled, (state, action) => {
+      state.isFetchingUser = false;
+      state.metaUser.totalPages = action.payload.result.totalPages;
+      state.metaUser.pageSize = action.payload.result.pageSize;
+      state.metaUser.pageNumber = action.payload.result.pageNumber;
+      state.userPlaylist = action.payload.result.data;
+    });
+  },
+});
+
+export const {
+  handleChangeQuery,
+  setModalVisible,
+  setDeletePlaylistIds,
+  setIsDelete,
+} = playlistSlice.actions;
+
+export default playlistSlice.reducer;

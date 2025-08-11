@@ -1,9 +1,38 @@
+import PlaylistList from "@/components/client/playlist/PlaylistList";
+import { screenPadding } from "@/constants/tokens";
+import { useScroll } from "@/contexts/ScrollContext";
+import { useGetPlaylistData } from "@/hooks/data/useGetPlaylistData";
+import { useScrollToTop } from "@/hooks/layout/useScrollToTop";
 import { defaultStyles } from "@/styles";
-import React from "react";
-import { View } from "react-native";
+import React, { useRef } from "react";
+import { ScrollView, View } from "react-native";
 
 const PlaylistsScreen = () => {
-  return <View style={defaultStyles.container}></View>;
+  const { isFetching, playlists } = useGetPlaylistData(true);
+
+  const { handleScroll } = useScroll();
+
+  const scrollRef = useRef<ScrollView>(null);
+
+  useScrollToTop(scrollRef);
+
+  return (
+    <View style={defaultStyles.container}>
+      <ScrollView
+        ref={scrollRef}
+        onScroll={handleScroll}
+        decelerationRate="fast"
+        contentInsetAdjustmentBehavior="automatic"
+        style={{ paddingHorizontal: screenPadding.horizontal }}
+      >
+        <PlaylistList
+          isFetching={isFetching ?? true}
+          playlists={playlists ?? []}
+          scrollEnabled={false}
+        />
+      </ScrollView>
+    </View>
+  );
 };
 
 export default PlaylistsScreen;

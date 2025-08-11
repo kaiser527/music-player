@@ -5,6 +5,7 @@ import {
   IForgotPassword,
   IGetAccount,
   IModelPaginate,
+  IPlaylist,
   IRegister,
   ITrack,
   IUser,
@@ -62,5 +63,37 @@ export const callFetchArtist = (query: string) => {
 //----------------------user----------------------//
 
 //----------------------playlist----------------------//
+export const callFetchGlobalPlaylist = () => {
+  return axios.get<IBackendRes<IPlaylist[]>>("/api/v1/playlist/global");
+};
 
+export const callFetchUserPlaylist = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IPlaylist>>>(
+    `/api/v1/playlist/user?${query}`
+  );
+};
+
+export const callCreatePlaylist = (data: {
+  name: string;
+  trackIds: string[];
+}) => {
+  return axios.post<IBackendRes<IPlaylist>>("/api/v1/playlist", data);
+};
+
+export const callUpdatePlaylist = (
+  id: string,
+  data: {
+    name: string;
+    trackIds: string[];
+  }
+) => {
+  return axios.patch<IBackendRes<IPlaylist>>(`/api/v1/playlist/${id}`, data);
+};
+
+export const callBulkDeletePlaylist = (playlistIds: string[]) => {
+  return axios.post<IBackendRes<IPlaylist>>(
+    "/api/v1/playlist/bulk-delete",
+    playlistIds
+  );
+};
 //----------------------playlist----------------------//

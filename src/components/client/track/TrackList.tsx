@@ -27,6 +27,9 @@ const TrackList = (props: Props) => {
     if (trackIndex === -1) return;
 
     const trackQueue = await TrackPlayer.getQueue();
+
+    if (trackQueue.length === 1) await TrackPlayer.setQueue(props.tracks);
+
     if (trackQueue.length === 0 || props.tracks.length !== trackQueue.length)
       await TrackPlayer.setQueue(convertedTracks);
 

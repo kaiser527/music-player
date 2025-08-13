@@ -26,9 +26,10 @@ const FavoritesScreen = () => {
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
         <TrackList
-          filter={filter}
           tracks={tracks.filter((item) =>
-            filter.length > 0 ? item.title.toLowerCase().includes(filter) : item
+            filter.length > 0
+              ? item.title?.toLowerCase().includes(filter)
+              : item
           )}
           isFetching={false}
           scrollEnabled={false}

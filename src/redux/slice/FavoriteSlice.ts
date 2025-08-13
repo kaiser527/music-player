@@ -4,11 +4,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IState {
   track: ITrack[];
   filter: string;
+  isFavoriteQueue: boolean;
 }
 
 const initialState: IState = {
   track: [],
   filter: "",
+  isFavoriteQueue: false,
 };
 
 const favoriteSlice = createSlice({
@@ -31,13 +33,22 @@ const favoriteSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (index > -1) {
-        state.track.filter((item) => item.id !== action.payload.id);
+        state.track = state.track.filter(
+          (item) => item.id !== action.payload.id
+        );
       }
+    },
+    setIsFavoriteQueue: (state, action: PayloadAction<boolean>) => {
+      state.isFavoriteQueue = action.payload;
     },
   },
 });
 
-export const { handleChangeFilter, handleAddTrack, handleRemoveTrack } =
-  favoriteSlice.actions;
+export const {
+  handleChangeFilter,
+  setIsFavoriteQueue,
+  handleAddTrack,
+  handleRemoveTrack,
+} = favoriteSlice.actions;
 
 export default favoriteSlice.reducer;

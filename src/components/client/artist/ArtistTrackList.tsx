@@ -1,5 +1,6 @@
 import { fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
+import { convertTrack } from "@/helpers/convertTrack";
 import { defaultStyles } from "@/styles";
 import { IUser } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
@@ -50,7 +51,7 @@ const ArtistTrackList = (props: IProps) => {
             </Text>
             {search.length === 0 && props.artist.track.length > 0 && (
               <QueueControls
-                tracks={props.artist.track}
+                tracks={convertTrack(props.artist.track)}
                 style={{ paddingTop: 24 }}
               />
             )}

@@ -1,6 +1,7 @@
 import FloatingPlayer from "@/components/client/player/FloatingPlayer";
 import PlaylistActionButton from "@/components/client/playlist/PlaylistActionButton";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
+import { useGetPathname } from "@/hooks/layout/useGetPathname";
 import { useDeletePlaylist } from "@/hooks/playlist/useDeletePlaylist";
 import { useToggleDeletePlaylist } from "@/hooks/playlist/useToggleDeletePlaylist";
 import { useTogglePlaylistModal } from "@/hooks/playlist/useTogglePlaylistModal";
@@ -13,7 +14,6 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useNavigationState } from "@react-navigation/native";
 import { colors, fontSize } from "constants/tokens";
 import { BlurView } from "expo-blur";
 import { Tabs, usePathname } from "expo-router";
@@ -30,17 +30,8 @@ const TabsNavigation = () => {
 
   const activeTrack = useActiveTrack();
   const pathName = usePathname();
+  const currentRouteName = useGetPathname();
   const dispatch = useAppDispatch();
-
-  const currentRouteName = useNavigationState((state) => {
-    const drawerRoute = state.routes[state.index];
-    const tabsState = drawerRoute.state;
-
-    if (!tabsState || !tabsState.index) return null;
-
-    const activeTab = tabsState.routes[tabsState.index];
-    return activeTab.name;
-  });
 
   const handleDeletePlaylist = async () => {
     const res = await callBulkDeletePlaylist(deleteIds);

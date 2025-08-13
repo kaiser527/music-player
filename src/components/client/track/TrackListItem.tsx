@@ -7,6 +7,8 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import LoaderKit from "react-native-loader-kit";
 import { Track, useActiveTrack, useIsPlaying } from "react-native-track-player";
+import { StopPropagation } from "../StopPropagation";
+import TrackShortCutsMenu from "./TrackShortCutsMenu";
 
 interface IProps {
   track: Track;
@@ -67,7 +69,15 @@ const TrackListItem = (props: IProps) => {
               {props.track.artist}
             </Text>
           </View>
-          <Entypo name="dots-three-horizontal" size={20} color={colors.icon} />
+          <StopPropagation>
+            <TrackShortCutsMenu track={newTrack}>
+              <Entypo
+                name="dots-three-horizontal"
+                size={20}
+                color={colors.icon}
+              />
+            </TrackShortCutsMenu>
+          </StopPropagation>
         </View>
       </View>
     </TouchableHighlight>

@@ -1,5 +1,6 @@
 import { fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL, unKnownTrackImage } from "@/constants/utils";
+import { convertTrack } from "@/helpers/convertTrack";
 import { defaultStyles } from "@/styles";
 import { IPlaylist } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
@@ -54,7 +55,7 @@ const PlaylistTrackList = (props: IProps) => {
             {search.length === 0 && props.playlist.track.length > 0 && (
               <QueueControls
                 style={{ paddingTop: 24 }}
-                tracks={props.playlist.track}
+                tracks={convertTrack(props.playlist.track)}
               />
             )}
           </View>

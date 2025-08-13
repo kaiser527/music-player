@@ -10,7 +10,7 @@ import { ScrollView, View } from "react-native";
 const SongsScreen = () => {
   const { handleScroll } = useScroll();
 
-  const { tracks, isFetching } = useGetTrackData();
+  const { tracks, isFetching } = useGetTrackData(true);
 
   const scrollRef = useRef<ScrollView>(null);
 

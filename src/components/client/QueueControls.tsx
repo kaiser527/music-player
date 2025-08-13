@@ -1,6 +1,9 @@
 import { colors } from "@/constants/tokens";
+import { compareArray } from "@/helpers/compareArray";
+import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
 import { defaultStyles } from "@/styles";
 import { Ionicons } from "@expo/vector-icons";
+import { usePathname } from "expo-router";
 import _ from "lodash";
 import React from "react";
 import {
@@ -18,15 +21,27 @@ interface IProps {
 }
 
 const QueueControls = (props: IProps) => {
-  const handlePlay = async () => {
-    const trackQueue = await TrackPlayer.getQueue();
+  const { setIsFavorite } = useGetFavoriteSlice();
 
-    if (trackQueue.length === 1) {
-      await TrackPlayer.setQueue(props.tracks);
+  const pathName = usePathname();
+
+  const handlePlay = async () => {
+    if (pathName === "/favorites") {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
     }
 
-    if (trackQueue.length === 0 || props.tracks.length !== trackQueue.length) {
+    const trackQueue = await TrackPlayer.getQueue();
+
+    console.log(
+      "check different queue",
+      !compareArray(trackQueue, props.tracks)
+    );
+
+    if (trackQueue.length === 0 || !compareArray(trackQueue, props.tracks)) {
       await TrackPlayer.setQueue(props.tracks);
+      console.log("set queue play");
     }
 
     await TrackPlayer.skip(0);
@@ -34,18 +49,26 @@ const QueueControls = (props: IProps) => {
   };
 
   const handleShufflePlay = async () => {
+    if (pathName === "/favorites") {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+
     const trackQueue = await TrackPlayer.getQueue();
+
+    console.log(
+      "check different queue",
+      !compareArray(trackQueue, props.tracks)
+    );
 
     const shuffleTracks = _.cloneDeep(props.tracks).sort(
       () => Math.random() - 0.5
     );
 
-    if (trackQueue.length === 1) {
+    if (trackQueue.length === 0 || !compareArray(trackQueue, props.tracks)) {
       await TrackPlayer.setQueue(props.tracks);
-    }
-
-    if (trackQueue.length === 0 || props.tracks.length !== trackQueue.length) {
-      await TrackPlayer.setQueue(props.tracks);
+      console.log("set queue shuffle");
     }
 
     const randomIndex = Math.floor(Math.random() * shuffleTracks.length);

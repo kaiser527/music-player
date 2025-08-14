@@ -4,9 +4,6 @@ import { ITrack } from "@/types/backend";
 export const useGetFavoriteSlice = () => {
   const tracks: ITrack[] = useAppSelector((state) => state.favorite.track);
   const filter: string = useAppSelector((state) => state.favorite.filter);
-  const isFavorite: boolean = useAppSelector(
-    (state) => state.favorite.isFavoriteQueue
-  );
 
   const dispatch = useAppDispatch();
 
@@ -24,10 +21,5 @@ export const useGetFavoriteSlice = () => {
     }
   };
 
-  const setIsFavorite = async (value: boolean) => {
-    const { setIsFavoriteQueue } = await import("redux/slice/FavoriteSlice");
-    dispatch(setIsFavoriteQueue(value));
-  };
-
-  return { tracks, filter, toggleTrackFavorite, setIsFavorite, isFavorite };
+  return { tracks, filter, toggleTrackFavorite };
 };

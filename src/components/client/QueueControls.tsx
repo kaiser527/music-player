@@ -1,6 +1,6 @@
 import { colors } from "@/constants/tokens";
 import { compareArray } from "@/helpers/compareArray";
-import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
+import { useTrackQueue } from "@/hooks/track/useTrackQueue";
 import { defaultStyles } from "@/styles";
 import { Ionicons } from "@expo/vector-icons";
 import { usePathname } from "expo-router";
@@ -21,16 +21,10 @@ interface IProps {
 }
 
 const QueueControls = (props: IProps) => {
-  const { setIsFavorite } = useGetFavoriteSlice();
-
-  const pathName = usePathname();
+  const { setActiveQueue } = useTrackQueue();
 
   const handlePlay = async () => {
-    if (pathName === "/favorites") {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
+    await setActiveQueue();
 
     const trackQueue = await TrackPlayer.getQueue();
 
@@ -49,11 +43,7 @@ const QueueControls = (props: IProps) => {
   };
 
   const handleShufflePlay = async () => {
-    if (pathName === "/favorites") {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
+    await setActiveQueue();
 
     const trackQueue = await TrackPlayer.getQueue();
 

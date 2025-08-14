@@ -1,4 +1,5 @@
 import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
+import { useTrackQueue } from "@/hooks/track/useTrackQueue";
 import { ITrack } from "@/types/backend";
 import { MenuView } from "@react-native-menu/menu";
 import { useRouter } from "expo-router";
@@ -11,7 +12,8 @@ type Props = PropsWithChildren<{ track: Track }>;
 const TrackShortCutsMenu = (props: Props) => {
   const router = useRouter();
 
-  const { tracks, toggleTrackFavorite, isFavorite } = useGetFavoriteSlice();
+  const { activeQueue } = useTrackQueue();
+  const { tracks, toggleTrackFavorite } = useGetFavoriteSlice();
 
   const favorite = tracks.find((item) => item.url === props.track.url);
 
@@ -20,7 +22,7 @@ const TrackShortCutsMenu = (props: Props) => {
       .with("add-to-favorites", async () => {
         await toggleTrackFavorite(props.track as ITrack, "add-to-favorites");
 
-        if (isFavorite) {
+        if (activeQueue === "favorites") {
           await TrackPlayer.add(props.track);
           console.log("add-to-favorites");
         }
@@ -33,7 +35,7 @@ const TrackShortCutsMenu = (props: Props) => {
 
         const trackQueue = await TrackPlayer.getQueue();
 
-        if (isFavorite) {
+        if (activeQueue === "favorites") {
           const index = trackQueue.findIndex(
             (item) => item.url === props.track.url
           );

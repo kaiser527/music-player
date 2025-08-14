@@ -2,9 +2,8 @@ import ItemDivider from "@/components/client/ItemSeparator";
 import ListEmpty from "@/components/client/ListEmpty";
 import { compareArray } from "@/helpers/compareArray";
 import { convertTrack, convertUrl } from "@/helpers/convertTrack";
-import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
+import { useTrackQueue } from "@/hooks/track/useTrackQueue";
 import { ITrack } from "@/types/backend";
-import { usePathname } from "expo-router";
 import React from "react";
 import { FlatList, FlatListProps } from "react-native";
 import TrackPlayer, { Track } from "react-native-track-player";
@@ -19,18 +18,13 @@ type Props = Partial<FlatListProps<Track>> & {
 };
 
 const TrackList = (props: Props) => {
-  const { setIsFavorite } = useGetFavoriteSlice();
-
-  const pathName = usePathname();
+  const { activeQueue, setActiveQueue } = useTrackQueue();
+  console.log(activeQueue);
 
   const convertedTracks = convertTrack(props.tracks);
 
   const handleTrackSelect = async (selectedTrack: Track) => {
-    if (pathName === "/favorites") {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
+    await setActiveQueue();
 
     const selectedUrl = convertUrl(selectedTrack.url);
     const trackIndex = convertedTracks.findIndex(

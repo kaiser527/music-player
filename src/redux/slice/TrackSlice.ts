@@ -29,6 +29,7 @@ interface IState {
   data: ITrack[];
   singleTrack: ITrack;
   query: string;
+  activeQueueId: string;
 }
 
 const initialState: IState = {
@@ -53,6 +54,7 @@ const initialState: IState = {
     },
   },
   query: "",
+  activeQueueId: "",
 };
 
 const trackSlice = createSlice({
@@ -61,6 +63,9 @@ const trackSlice = createSlice({
   reducers: {
     handleChangeQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
+    },
+    setActiveQueueId: (state, action: PayloadAction<string>) => {
+      state.activeQueueId = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -121,6 +126,6 @@ const trackSlice = createSlice({
   },
 });
 
-export const { handleChangeQuery } = trackSlice.actions;
+export const { handleChangeQuery, setActiveQueueId } = trackSlice.actions;
 
 export default trackSlice.reducer;

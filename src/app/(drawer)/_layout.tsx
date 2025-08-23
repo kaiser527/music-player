@@ -1,49 +1,16 @@
 import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
-import { useAppDispatch } from "@/redux/hooks";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
-import React, { useEffect } from "react";
+import React from "react";
 
 const DrawerLayout = () => {
-  const dispatch = useAppDispatch();
-
-  const { user, isAuthenticated } = useGetAccount();
-
-  const pathname = usePathname();
-
-  useEffect(() => {
-    fetchAccount();
-  }, []);
-
-  const fetchAccount = async () => {
-    const access_token = await AsyncStorage.getItem("access_token");
-    const refresh_token = await AsyncStorage.getItem("refresh_token");
-    const { fetchAccount, setLogoutAction } = await import(
-      "redux/slice/AccountSlice"
-    );
-    if (
-      pathname.includes("login") ||
-      pathname.includes("register") ||
-      !isAuthenticated
-    )
-      return;
-
-    if (access_token && refresh_token) dispatch(fetchAccount());
-    else dispatch(setLogoutAction({}));
-  };
+  const { user, isAuthenticated } = useGetAccount(true);
 
   return (
     <Drawer
       drawerContent={(props) => (
-        <CustomDrawerContent
-          {...props}
-          user={user}
-          isAuthenticated={isAuthenticated}
-          isAdmin={false}
-        />
+        <CustomDrawerContent {...props} isAdmin={false} />
       )}
       screenOptions={{
         drawerHideStatusBarOnOpen: true,

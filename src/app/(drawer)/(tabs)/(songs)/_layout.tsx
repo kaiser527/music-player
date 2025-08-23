@@ -1,13 +1,14 @@
 import CustomHeader from "@/components/client/custom/CustomHeader";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
+import { handleChangeQuery } from "@/redux/slice/TrackSlice";
 import { defaultStyles } from "@/styles";
 import {
   StackScreenWithSearchBar,
   StackScreenWithSearchBarCollapse,
 } from "constants/layout";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 
 const SongsScreenLayout = () => {
@@ -15,10 +16,9 @@ const SongsScreenLayout = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleChangInput = async (text: string) => {
-    const { handleChangeQuery } = await import("redux/slice/TrackSlice");
+  const handleChangInput = useCallback((text: string) => {
     dispatch(handleChangeQuery(text));
-  };
+  }, []);
 
   return (
     <View style={defaultStyles.container}>

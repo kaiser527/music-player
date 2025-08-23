@@ -43,21 +43,25 @@ const VerifyScreen = () => {
   };
 
   const handleConfirm = async () => {
-    if (
-      isForgot == 1
+    const checkInput =
+      isForgot === 1
         ? !codeRef.current ||
           !passwordRef.current ||
           !confirmPasswordRef.current
-        : !codeRef.current
-    ) {
+        : !codeRef.current;
+
+    if (checkInput) {
       showMessage({
         message: "Error occurred",
         description:
-          isForgot == 1 ? "All field must be filled" : "Code must be not empty",
+          isForgot === 1
+            ? "All field must be filled"
+            : "Code must be not empty",
         type: "danger",
       });
       return;
     }
+
     const res = isForgot
       ? await callResetPassword({
           email: params.email as string,
@@ -70,12 +74,13 @@ const VerifyScreen = () => {
           codeId: codeRef.current,
           isForgot: false,
         });
+
     if (res.result) {
       router.replace("/(drawer)/auth/login");
       handleReset();
       showMessage({
         message:
-          isForgot == 1
+          isForgot === 1
             ? "Reset password successfully"
             : "Account activation successfully",
         description: "Please login to continue",
@@ -95,7 +100,7 @@ const VerifyScreen = () => {
     const res = await callResendCode({
       email: params.email as string,
       codeId: codeRef.current,
-      isForgot: isForgot == 1,
+      isForgot: isForgot === 1,
     });
     setIsLoading(false);
     if (res.code == 1000) {
@@ -119,10 +124,10 @@ const VerifyScreen = () => {
       <View style={styles.main}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
-            {isForgot == 1 ? "Reset" : "Activate"}
+            {isForgot === 1 ? "Reset" : "Activate"}
           </Text>
           <Text style={styles.title}>
-            Your {isForgot == 1 ? "Password" : "Account"}
+            Your {isForgot === 1 ? "Password" : "Account"}
           </Text>
         </View>
         <View style={styles.content}>
@@ -136,7 +141,7 @@ const VerifyScreen = () => {
               onChangeText={(text) => (codeRef.current = text)}
             />
           </View>
-          {isForgot == 1 && (
+          {isForgot === 1 && (
             <>
               <View style={styles.inputWrapper}>
                 <MaterialIcons name="lock" size={26} color={inputColor} />

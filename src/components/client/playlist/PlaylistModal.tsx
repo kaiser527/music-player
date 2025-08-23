@@ -1,11 +1,11 @@
 import CloseButton from "@/components/share/CloseButton";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
+import { usePlaylistInit } from "@/hooks/playlist/usePlaylistInit";
 import { useTogglePlaylistModal } from "@/hooks/playlist/useTogglePlaylistModal";
 import { useAppDispatch } from "@/redux/hooks";
 import { fetchUserPlaylist } from "@/redux/slice/PlaylistSlice";
 import { callCreatePlaylist, callUpdatePlaylist } from "@/services/api";
-import { IPlaylist } from "@/types/backend";
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -18,34 +18,29 @@ import {
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
-interface IProps {
-  modalVisible: boolean;
-  setDataInit: (v: IPlaylist | null) => void;
-  dataInit: IPlaylist | null;
-}
-
-const PlaylistModal = (props: IProps) => {
+const PlaylistModal = () => {
   const playlistRef = useRef("");
   const inputRef = useRef<TextInput>(null);
 
   const dispatch = useAppDispatch();
 
-  const { setIsShowModal } = useTogglePlaylistModal();
+  const { initPlaylist, setInitPlaylist } = usePlaylistInit();
+  const { isShowModal, setIsShowModal } = useTogglePlaylistModal();
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (props.dataInit) {
-      playlistRef.current = props.dataInit?.name;
-      inputRef.current?.setNativeProps({ text: props.dataInit.name });
+    if (initPlaylist) {
+      playlistRef.current = initPlaylist.name;
+      inputRef.current?.setNativeProps({ text: initPlaylist.name });
     }
-  }, [props.dataInit]);
+  }, [initPlaylist]);
 
-  const handleClose = async () => {
+  const handleClose = () => {
     playlistRef.current = "";
     inputRef.current?.clear();
-    props.setDataInit(null);
-    await setIsShowModal(false);
+    setInitPlaylist({ id: "", name: "", track: [] });
+    setIsShowModal(false);
   };
 
   const handleSubmit = async () => {
@@ -60,10 +55,10 @@ const PlaylistModal = (props: IProps) => {
     }
     setIsLoading(true);
     const res =
-      props.dataInit && props.dataInit.id
-        ? await callUpdatePlaylist(props.dataInit.id, {
+      initPlaylist && initPlaylist.id
+        ? await callUpdatePlaylist(initPlaylist.id, {
             name: playlistRef.current,
-            trackIds: props.dataInit.track.map((item) => item.id ?? ""),
+            trackIds: initPlaylist.track.map((item) => item.id ?? ""),
           })
         : await callCreatePlaylist({
             name: playlistRef.current,
@@ -73,13 +68,6 @@ const PlaylistModal = (props: IProps) => {
     if (res.result) {
       handleClose();
       dispatch(fetchUserPlaylist(`pageSize=100&pageNumber=1&name=`));
-      showMessage({
-        message: "Success",
-        description: props.dataInit
-          ? "Update playlist successfully"
-          : "Create playlist successfully",
-        type: "success",
-      });
     } else {
       showMessage({
         message: "Error occurred",
@@ -90,19 +78,15 @@ const PlaylistModal = (props: IProps) => {
   };
 
   return (
-    <Modal
-      visible={props.modalVisible}
-      transparent={true}
-      animationType="slide"
-    >
+    <Modal visible={isShowModal} transparent={true} animationType="slide">
       <View style={styles.modalBackground}>
         <View style={styles.modalContent}>
           <CloseButton
             style={{ position: "absolute", top: 15, right: 15 }}
-            onPress={async () => await handleClose()}
+            onPress={handleClose}
           />
           <Text style={styles.modalTitle}>
-            {props.dataInit ? "Update a Playlist" : "Create a New Playlist"}
+            {initPlaylist.id ? "Update a Playlist" : "Create a New Playlist"}
           </Text>
           <View style={styles.modalBody}>
             <Text numberOfLines={1} style={styles.playlistNameText}>

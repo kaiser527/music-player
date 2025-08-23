@@ -5,9 +5,10 @@ import {
 } from "@/constants/layout";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
+import { handleChangeFilter } from "@/redux/slice/FavoriteSlice";
 import { defaultStyles } from "@/styles";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 
 const FavoritesScreenLayout = () => {
@@ -15,10 +16,9 @@ const FavoritesScreenLayout = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleChangInput = async (text: string) => {
-    const { handleChangeFilter } = await import("redux/slice/FavoriteSlice");
+  const handleChangInput = useCallback((text: string) => {
     dispatch(handleChangeFilter(text));
-  };
+  }, []);
 
   return (
     <View style={defaultStyles.container}>

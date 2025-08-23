@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { handleAddTrack, handleRemoveTrack } from "@/redux/slice/FavoriteSlice";
 import { ITrack } from "@/types/backend";
 
 export const useGetFavoriteSlice = () => {
@@ -7,13 +8,10 @@ export const useGetFavoriteSlice = () => {
 
   const dispatch = useAppDispatch();
 
-  const toggleTrackFavorite = async (
+  const toggleTrackFavorite = (
     track: ITrack,
     id: "add-to-favorites" | "remove-from-favorites"
   ) => {
-    const { handleAddTrack, handleRemoveTrack } = await import(
-      "redux/slice/FavoriteSlice"
-    );
     if (id === "add-to-favorites") {
       dispatch(handleAddTrack(track));
     } else if (id === "remove-from-favorites") {

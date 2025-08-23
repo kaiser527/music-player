@@ -1,5 +1,4 @@
 import { useDeletePlaylist } from "@/hooks/playlist/useDeletePlaylist";
-import { useTogglePlaylistModal } from "@/hooks/playlist/useTogglePlaylistModal";
 import { IPlaylist } from "@/types/backend";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
@@ -7,19 +6,17 @@ import { FlatList, FlatListProps } from "react-native";
 import ItemDivider from "../ItemSeparator";
 import ListEmpty from "../ListEmpty";
 import PlaylistListItem from "./PlaylistListItem";
-import PlaylistModal from "./PlaylistModal";
 import PlaylistSkeleton from "./PlaylistSkeleton";
 
 type Props = Partial<FlatListProps<IPlaylist>> & {
   isFetching: boolean;
   playlists: IPlaylist[];
+  handlePlaylistPress: (v: IPlaylist) => Promise<void>;
 };
 
 const PlaylistList = (props: Props) => {
-  const { isShowModal } = useTogglePlaylistModal();
   const { setDeleteIds } = useDeletePlaylist();
 
-  const [dataInit, setDataInit] = useState<IPlaylist | null>(null);
   const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
 
   useEffect(() => {
@@ -52,32 +49,25 @@ const PlaylistList = (props: Props) => {
       {props.isFetching ? (
         <PlaylistSkeleton />
       ) : (
-        <>
-          <FlatList
-            data={playlists}
-            keyExtractor={(item) => item.id ?? ""}
-            contentContainerStyle={{ paddingBottom: 160 }}
-            ItemSeparatorComponent={() => (
-              <ItemDivider marginLeft={80} marginVertical={12} />
-            )}
-            ListEmptyComponent={() => (
-              <ListEmpty text={"No playlist found"} screen="TRACK" />
-            )}
-            renderItem={({ item }) => (
-              <PlaylistListItem
-                handleChecked={handleChecked}
-                setDataInit={setDataInit}
-                playlist={item}
-              />
-            )}
-            {...props}
-          />
-          <PlaylistModal
-            dataInit={dataInit}
-            setDataInit={setDataInit}
-            modalVisible={isShowModal}
-          />
-        </>
+        <FlatList
+          data={playlists}
+          keyExtractor={(item) => item.id ?? ""}
+          contentContainerStyle={{ paddingBottom: 160 }}
+          ItemSeparatorComponent={() => (
+            <ItemDivider marginLeft={80} marginVertical={12} />
+          )}
+          ListEmptyComponent={() => (
+            <ListEmpty text={"No playlist found"} screen="TRACK" />
+          )}
+          renderItem={({ item }) => (
+            <PlaylistListItem
+              handlePlaylistPress={props.handlePlaylistPress}
+              handleChecked={handleChecked}
+              playlist={item}
+            />
+          )}
+          {...props}
+        />
       )}
     </>
   );

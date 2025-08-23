@@ -1,8 +1,9 @@
 import { fontSize } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
+import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { useAppDispatch } from "@/redux/hooks";
+import { setLogoutAction } from "@/redux/slice/AccountSlice";
 import { callLogout } from "@/services/api";
-import { IUser } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,8 +20,6 @@ import { showMessage } from "react-native-flash-message";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type CustomDrawerProps = DrawerContentComponentProps & {
-  user: IUser;
-  isAuthenticated: boolean;
   isAdmin: boolean;
 };
 
@@ -28,15 +27,14 @@ const textColor = "rgba(255, 255, 255, 0.75)";
 
 const CustomDrawerContent = (props: CustomDrawerProps) => {
   const { top, bottom } = useSafeAreaInsets();
+  const { user, isAuthenticated } = useGetAccount(false);
 
   const router = useRouter();
-
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     await callLogout();
 
-    const { setLogoutAction } = await import("redux/slice/AccountSlice");
     dispatch(setLogoutAction({}));
     await AsyncStorage.removeItem("refresh_token");
 
@@ -50,16 +48,16 @@ const CustomDrawerContent = (props: CustomDrawerProps) => {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props} scrollEnabled={false}>
         {props.isAdmin && <Text style={styles.title}>Admin Side</Text>}
-        {props.isAuthenticated && (
+        {isAuthenticated && (
           <View style={{ padding: top - 25 }}>
             <FastImage
               source={{
-                uri: `${REACT_BACKEND_URL}/api/v1/images/user/${props.user.image}`,
+                uri: `${REACT_BACKEND_URL}/api/v1/images/user/${user.image}`,
                 priority: FastImage.priority.normal,
               }}
               style={styles.image}
             />
-            <Text style={styles.username}>{props.user.username}</Text>
+            <Text style={styles.username}>{user.username}</Text>
           </View>
         )}
         <DrawerItemList {...props} />
@@ -72,7 +70,7 @@ const CustomDrawerContent = (props: CustomDrawerProps) => {
             onPress={() => router.push("/")}
           />
         )}
-        {props.isAuthenticated && !props.isAdmin && (
+        {isAuthenticated && !props.isAdmin && (
           <DrawerItem
             icon={({ color }) => (
               <FontAwesome name="sign-out" size={20} color={color} />

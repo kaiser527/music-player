@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setRefreshTokenAction } from "@/redux/slice/AccountSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { usePathname, useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -29,20 +30,19 @@ const LayoutApp = (props: IProps) => {
 
   const handleErrorRefreshTokenRotation = async () => {
     await AsyncStorage.multiRemove(["access_token", "refresh_token"]);
-    const { setRefreshTokenAction } = await import("redux/slice/AccountSlice");
     dispatch(
       setRefreshTokenAction({
         status: false,
         message: "Your login session is ended, please login",
       })
     );
-    if (pathName !== "/") {
+    if (pathName.includes("detail") || pathName.includes("(admin)")) {
       showMessage({
         message: "Error occurred",
         description: errorRefreshToken,
         type: "danger",
       });
-      router.push("/(drawer)/auth/login");
+      router.replace("/(drawer)/auth/login");
     }
   };
 

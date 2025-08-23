@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Action,
-  combineSlices,
+  combineReducers,
   configureStore,
   ThunkAction,
 } from "@reduxjs/toolkit";
@@ -17,18 +17,18 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import accountSlice from "./slice/AccountSlice";
-import favoriteSlice from "./slice/FavoriteSlice";
-import playlistSlice from "./slice/PlaylistSlice";
-import trackSlice from "./slice/TrackSlice";
-import userSlice from "./slice/UserSlice";
+import accountReducer from "./slice/AccountSlice";
+import favoriteReducer from "./slice/FavoriteSlice";
+import playlistReducer from "./slice/PlaylistSlice";
+import trackReducer from "./slice/TrackSlice";
+import userReducer from "./slice/UserSlice";
 
-const rootReducer = combineSlices({
-  account: accountSlice,
-  track: trackSlice,
-  favorite: favoriteSlice,
-  user: userSlice,
-  playlist: playlistSlice,
+const rootReducer = combineReducers({
+  account: accountReducer,
+  track: trackReducer,
+  favorite: favoriteReducer,
+  user: userReducer,
+  playlist: playlistReducer,
 });
 
 const persistConfig = getPersistConfig({

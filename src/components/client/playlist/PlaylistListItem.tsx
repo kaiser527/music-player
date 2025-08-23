@@ -1,13 +1,14 @@
 import { colors } from "@/constants/tokens";
 import { REACT_BACKEND_URL, unKnownTrackImage } from "@/constants/utils";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
+import { usePlaylistInit } from "@/hooks/playlist/usePlaylistInit";
 import { useToggleDeletePlaylist } from "@/hooks/playlist/useToggleDeletePlaylist";
 import { useTogglePlaylistModal } from "@/hooks/playlist/useTogglePlaylistModal";
 import { defaultStyles } from "@/styles";
 import { IPlaylist } from "@/types/backend";
 import FastImage from "@d11/react-native-fast-image";
 import { AntDesign, Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { usePathname } from "expo-router";
 import React from "react";
 import {
   StyleSheet,
@@ -20,31 +21,27 @@ import { CheckBox } from "react-native-elements";
 
 interface IProps {
   playlist: IPlaylist;
-  setDataInit: (v: IPlaylist) => void;
   handleChecked: (v: IPlaylist) => void;
+  handlePlaylistPress: (v: IPlaylist) => Promise<void>;
 }
 
 const PlaylistListItem = (props: IProps) => {
-  const router = useRouter();
-
   const { setIsShowModal } = useTogglePlaylistModal();
-  const { isAuthenticated } = useGetAccount();
+  const { isAuthenticated } = useGetAccount(false);
+  const { setInitPlaylist } = usePlaylistInit();
   const { isDeleteMode } = useToggleDeletePlaylist();
 
-  const handleEditPress = async (playlist: IPlaylist) => {
-    await setIsShowModal(true);
-    props.setDataInit(playlist);
+  const pathName = usePathname();
+
+  const handleEditPress = (playlist: IPlaylist) => {
+    setIsShowModal(true);
+    setInitPlaylist(playlist);
   };
 
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={() =>
-        router.push({
-          pathname: "/(drawer)/(tabs)/playlists/detail",
-          params: { playlist: JSON.stringify(props.playlist) },
-        })
-      }
+      onPress={() => props.handlePlaylistPress(props.playlist)}
     >
       <View style={styles.playlistItemContainer}>
         {isDeleteMode && props.playlist.user && (
@@ -72,19 +69,22 @@ const PlaylistListItem = (props: IProps) => {
             {props.playlist.name}
           </Text>
           <View style={styles.actionGroup}>
-            {isAuthenticated && props.playlist.user && !isDeleteMode && (
-              <TouchableHighlight
-                activeOpacity={0.8}
-                onPress={() => handleEditPress(props.playlist)}
-              >
-                <Feather
-                  name="edit-2"
-                  size={17}
-                  color={colors.icon}
-                  style={{ opacity: 0.5 }}
-                />
-              </TouchableHighlight>
-            )}
+            {isAuthenticated &&
+              props.playlist.user &&
+              !isDeleteMode &&
+              pathName.includes("playlists") && (
+                <TouchableHighlight
+                  activeOpacity={0.8}
+                  onPress={() => handleEditPress(props.playlist)}
+                >
+                  <Feather
+                    name="edit-2"
+                    size={17}
+                    color={colors.icon}
+                    style={{ opacity: 0.5 }}
+                  />
+                </TouchableHighlight>
+              )}
             <AntDesign
               name="right"
               size={20}

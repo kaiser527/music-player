@@ -6,6 +6,10 @@ import PlayerVolumeBar from "@/components/client/player/PlayerVolumeBar";
 import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import { colors as clrs, fontSize, screenPadding } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
+import { convertTrack, convertUrl } from "@/helpers/convertTrack";
+import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
+import { useGetTrackData } from "@/hooks/data/useGetTrackData";
+import { useTrackQueue } from "@/hooks/track/useTrackQueue";
 import { defaultStyles, utilsStyles } from "@/styles";
 import FastImage from "@d11/react-native-fast-image";
 import { FontAwesome } from "@expo/vector-icons";
@@ -23,19 +27,17 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useActiveTrack } from "react-native-track-player";
+import TrackPlayer, { useActiveTrack } from "react-native-track-player";
 
 const PlayerScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
-
-  const track = useActiveTrack();
-  const imageUrl = track
-    ? `${REACT_BACKEND_URL}/api/v1/images/track/${track.artwork}`
-    : "";
+  const { tracks: mainTracks } = useGetTrackData(false);
+  const { tracks, toggleTrackFavorite } = useGetFavoriteSlice();
+  const { activeQueue } = useTrackQueue();
 
   const [colors, setColors] = useState<ColorValue[]>(["transparent", "black"]);
 
-  const isFavorite = false;
+  const track = useActiveTrack();
 
   useEffect(() => {
     if (track) getImageColors();
@@ -49,13 +51,42 @@ const PlayerScreen = () => {
     );
   }
 
+  const imageUrl = `${REACT_BACKEND_URL}/api/v1/images/track/${track.artwork}`;
+  const favorite = tracks.find((item) => item.url === track.url);
+
   const getImageColors = async () => {
     const image = imageUrl;
     const avg = await getAverageColor(image, { pixelSpacingAndroid: 2 });
     setColors(["#1a1a1a", avg, avg]);
   };
 
-  const toggleFavorite = () => {};
+  const toggleFavorite = async () => {
+    if (favorite) {
+      toggleTrackFavorite(favorite, "remove-from-favorites");
+
+      const trackQueue = await TrackPlayer.getQueue();
+
+      if (activeQueue === "favorites") {
+        const index = trackQueue.findIndex((item) => item.url === favorite.url);
+        await TrackPlayer.remove(index);
+        console.log("remove-from-favorites");
+      }
+    } else {
+      const index = convertTrack(mainTracks).findIndex(
+        (item) => item.url === track.url
+      );
+
+      toggleTrackFavorite(
+        { ...mainTracks[index], url: convertUrl(mainTracks[index].url) },
+        "add-to-favorites"
+      );
+
+      if (activeQueue === "favorites") {
+        await TrackPlayer.add(track);
+        console.log("add-to-favorites");
+      }
+    }
+  };
 
   return (
     <LinearGradient style={styles.overlayContainer} colors={[...colors] as any}>
@@ -85,9 +116,9 @@ const PlayerScreen = () => {
                     />
                   </View>
                   <FontAwesome
-                    name={isFavorite ? "heart" : "heart-o"}
+                    name={favorite ? "heart" : "heart-o"}
                     size={20}
-                    color={isFavorite ? clrs.primary : clrs.icon}
+                    color={favorite ? clrs.primary : clrs.icon}
                     style={{ marginHorizontal: 14 }}
                     onPress={toggleFavorite}
                   />

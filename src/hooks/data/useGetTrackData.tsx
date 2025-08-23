@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchTrack } from "@/redux/slice/TrackSlice";
 import { ITrack } from "@/types/backend";
 import { useEffect } from "react";
 
@@ -15,8 +16,7 @@ export const useGetTrackData = (isFetch: boolean) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchListTrack = async () => {
-      const { fetchTrack } = await import("@/redux/slice/TrackSlice");
+    const fetchListTrack = () => {
       dispatch(fetchTrack(`pageSize=100&pageNumber=1&title=${query}`));
     };
 

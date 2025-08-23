@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/redux/hooks";
+import { setDeletePlaylistIds } from "@/redux/slice/PlaylistSlice";
 import { useDispatch } from "react-redux";
 
 export const useDeletePlaylist = () => {
@@ -8,8 +9,7 @@ export const useDeletePlaylist = () => {
 
   const dispatch = useDispatch();
 
-  const setDeleteIds = async (value: string[]) => {
-    const { setDeletePlaylistIds } = await import("redux/slice/PlaylistSlice");
+  const setDeleteIds = (value: string[]) => {
     dispatch(setDeletePlaylistIds(value));
   };
 

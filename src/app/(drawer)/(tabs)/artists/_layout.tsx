@@ -6,9 +6,10 @@ import {
 import { colors } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
+import { handleChangeQuery } from "@/redux/slice/UserSlice";
 import { defaultStyles } from "@/styles";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 
 const ArtistsScreenLayout = () => {
@@ -16,10 +17,9 @@ const ArtistsScreenLayout = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleChangInput = async (text: string) => {
-    const { handleChangeQuery } = await import("redux/slice/UserSlice");
+  const handleChangInput = useCallback((text: string) => {
     dispatch(handleChangeQuery(text));
-  };
+  }, []);
 
   return (
     <View style={defaultStyles.container}>

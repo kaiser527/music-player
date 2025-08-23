@@ -1,20 +1,12 @@
 import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
-import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { FontAwesome } from "@expo/vector-icons";
 import Drawer from "expo-router/drawer";
 
 const AdminLayout = () => {
-  const { user, isAuthenticated } = useGetAccount();
-
   return (
     <Drawer
       drawerContent={(props) => (
-        <CustomDrawerContent
-          {...props}
-          user={user}
-          isAuthenticated={isAuthenticated}
-          isAdmin={true}
-        />
+        <CustomDrawerContent {...props} isAdmin={true} />
       )}
       screenOptions={{
         drawerHideStatusBarOnOpen: true,

@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setActiveQueueId } from "@/redux/slice/TrackSlice";
 import { usePathname } from "expo-router";
 
 export const useTrackQueue = () => {
@@ -10,9 +11,7 @@ export const useTrackQueue = () => {
 
   const pathName = usePathname();
 
-  const setActiveQueue = async () => {
-    const { setActiveQueueId } = await import("redux/slice/TrackSlice");
-
+  const setActiveQueue = (queueId?: string) => {
     switch (pathName) {
       case "/":
         dispatch(setActiveQueueId("songs"));
@@ -23,11 +22,11 @@ export const useTrackQueue = () => {
         break;
 
       case "/playlists/detail":
-        dispatch(setActiveQueueId("playlist-detail"));
+        dispatch(setActiveQueueId(`playlists-detail-${queueId}`));
         break;
 
       case "/artists/detail":
-        dispatch(setActiveQueueId("artists-detail"));
+        dispatch(setActiveQueueId(`artists-detail-${queueId}`));
         break;
 
       default:

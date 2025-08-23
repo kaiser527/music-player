@@ -15,16 +15,16 @@ type Props = Partial<FlatListProps<Track>> & {
   tracks: ITrack[];
   isFetching: boolean;
   hideQueueControls?: boolean;
+  queueId?: string;
 };
 
 const TrackList = (props: Props) => {
-  const { activeQueue, setActiveQueue } = useTrackQueue();
-  console.log(activeQueue);
+  const { setActiveQueue } = useTrackQueue();
 
   const convertedTracks = convertTrack(props.tracks);
 
   const handleTrackSelect = async (selectedTrack: Track) => {
-    await setActiveQueue();
+    setActiveQueue(props.queueId ?? "");
 
     const selectedUrl = convertUrl(selectedTrack.url);
     const trackIndex = convertedTracks.findIndex(
@@ -63,6 +63,7 @@ const TrackList = (props: Props) => {
             <>
               {!props.hideQueueControls && props.tracks.length > 0 && (
                 <QueueControls
+                  queueId={props.queueId}
                   tracks={convertedTracks}
                   style={{ paddingBottom: 20 }}
                 />

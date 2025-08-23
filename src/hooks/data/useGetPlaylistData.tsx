@@ -1,8 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  fetchGlobalPlaylist,
+  fetchUserPlaylist,
+} from "@/redux/slice/PlaylistSlice";
 import { IPlaylist } from "@/types/backend";
 import { useEffect } from "react";
 
-export const useGetPlaylistData = (isGlobal: boolean) => {
+export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
   const globalPlaylists: IPlaylist[] = useAppSelector(
     (state) => state.playlist.globalPlaylist
   );
@@ -29,17 +33,11 @@ export const useGetPlaylistData = (isGlobal: boolean) => {
 
   useEffect(
     () => {
-      const fetchPlaylist = async () => {
+      const fetchPlaylist = () => {
         if (isGlobal) {
           if (!isAuthenticated) {
-            const { fetchGlobalPlaylist } = await import(
-              "redux/slice/PlaylistSlice"
-            );
             dispatch(fetchGlobalPlaylist());
           } else {
-            const { fetchUserPlaylist } = await import(
-              "redux/slice/PlaylistSlice"
-            );
             dispatch(
               fetchUserPlaylist(`pageSize=100&pageNumber=1&name=${query}`)
             );
@@ -48,23 +46,21 @@ export const useGetPlaylistData = (isGlobal: boolean) => {
           //fetch all playlist in db
         }
       };
-      fetchPlaylist();
+      if (isFetch) fetchPlaylist();
     },
     isGlobal ? [isAuthenticated && query] : []
   );
 
-  return isGlobal
-    ? {
-        playlists: isAuthenticated
-          ? userPlaylists
-          : globalPlaylists.filter((item) =>
-              query.length > 0
-                ? item.name.toLocaleLowerCase().includes(query)
-                : item
-            ),
-        isFetching: isAuthenticated ? isFetchingUser : isFetchingGlobal,
-        meta: isAuthenticated ? metaUser : {},
-        query,
-      }
-    : {};
+  return {
+    playlists: isAuthenticated
+      ? userPlaylists
+      : globalPlaylists.filter((item) =>
+          query.length > 0
+            ? item.name.toLocaleLowerCase().includes(query)
+            : item
+        ),
+    isFetching: isAuthenticated ? isFetchingUser : isFetchingGlobal,
+    meta: isAuthenticated ? metaUser : {},
+    query,
+  };
 };

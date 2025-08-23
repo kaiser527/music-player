@@ -35,6 +35,7 @@ const ArtistTrackList = (props: IProps) => {
         scrollEnabled={false}
         ListHeaderComponentStyle={styles.artistHeaderContainer}
         hideQueueControls
+        queueId={props.artist.id}
         ListHeaderComponent={
           <View>
             <View style={styles.artworkImageContainer}>
@@ -51,6 +52,7 @@ const ArtistTrackList = (props: IProps) => {
             </Text>
             {search.length === 0 && props.artist.track.length > 0 && (
               <QueueControls
+                queueId={props.artist.id}
                 tracks={convertTrack(props.artist.track)}
                 style={{ paddingTop: 24 }}
               />

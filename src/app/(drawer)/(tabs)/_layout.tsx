@@ -1,5 +1,6 @@
 import FloatingPlayer from "@/components/client/player/FloatingPlayer";
 import PlaylistActionButton from "@/components/client/playlist/PlaylistActionButton";
+import PlaylistModal from "@/components/client/playlist/PlaylistModal";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { useGetPathname } from "@/hooks/layout/useGetPathname";
 import { useDeletePlaylist } from "@/hooks/playlist/useDeletePlaylist";
@@ -23,7 +24,7 @@ import { showMessage } from "react-native-flash-message";
 import { useActiveTrack } from "react-native-track-player";
 
 const TabsNavigation = () => {
-  const { isAuthenticated } = useGetAccount();
+  const { isAuthenticated } = useGetAccount(false);
   const { deleteIds, setDeleteIds } = useDeletePlaylist();
   const { setIsShowModal } = useTogglePlaylistModal();
   const { isDeleteMode, setIsDeleteMode } = useToggleDeletePlaylist();
@@ -36,8 +37,8 @@ const TabsNavigation = () => {
   const handleDeletePlaylist = async () => {
     const res = await callBulkDeletePlaylist(deleteIds);
     if (res.code === 1000) {
-      await setDeleteIds([]);
-      await setIsDeleteMode(false);
+      setDeleteIds([]);
+      setIsDeleteMode(false);
       dispatch(fetchUserPlaylist(`pageSize=100&pageNumber=1&name=`));
       showMessage({
         message: "Success",
@@ -137,7 +138,7 @@ const TabsNavigation = () => {
                 bottom: activeTrack ? 113 : 53,
                 right: 8,
               }}
-              onPress={async () => await setIsShowModal(true)}
+              onPress={() => setIsShowModal(true)}
             />
             {deleteIds.length > 0 && isDeleteMode && (
               <PlaylistActionButton
@@ -157,7 +158,7 @@ const TabsNavigation = () => {
                 bottom: activeTrack ? 113 : 53,
                 left: 8,
               }}
-              onPress={async () => await setIsDeleteMode(!isDeleteMode)}
+              onPress={() => setIsDeleteMode(!isDeleteMode)}
             />
           </>
         )}

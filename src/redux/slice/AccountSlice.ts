@@ -5,9 +5,21 @@ import { callFetchAccount } from "services/api";
 
 export const fetchAccount = createAsyncThunk(
   "account/fetchAccount",
-  async () => {
-    const response = await callFetchAccount();
-    return response.result;
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await callFetchAccount();
+      return response.result;
+    } catch (err: any) {
+      if (err?.type === "REFRESH_FAILED") {
+        dispatch(
+          setRefreshTokenAction({
+            status: true,
+            message: "An error occurred while refreshing token",
+          })
+        );
+      }
+      return rejectWithValue(err);
+    }
   }
 );
 
@@ -62,9 +74,6 @@ const accountSlice = createSlice({
       state.isAuthenticated = false;
       state.user = user;
     },
-    resetAccountState: (state) => {
-      state.isRefreshToken = true;
-    },
     setRefreshTokenAction: (state, action) => {
       state.isRefreshToken = action.payload?.status ?? false;
       state.errorRefreshToken = action.payload?.message ?? "";
@@ -103,11 +112,7 @@ const accountSlice = createSlice({
   },
 });
 
-export const {
-  resetAccountState,
-  setRefreshTokenAction,
-  setUserLoginInfo,
-  setLogoutAction,
-} = accountSlice.actions;
+export const { setRefreshTokenAction, setUserLoginInfo, setLogoutAction } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;

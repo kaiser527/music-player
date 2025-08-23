@@ -7,7 +7,7 @@ import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 
-const PlaylistScreen = () => {
+const PlaylistDetailScreen = () => {
   const { playlist } = useLocalSearchParams<{ playlist: string }>();
   const parsedPlaylist: IPlaylist = JSON.parse(playlist ?? "{}");
 
@@ -31,4 +31,4 @@ const PlaylistScreen = () => {
   );
 };
 
-export default PlaylistScreen;
+export default PlaylistDetailScreen;

@@ -35,6 +35,7 @@ const PlaylistTrackList = (props: IProps) => {
         scrollEnabled={false}
         ListHeaderComponentStyle={styles.playlistHeaderContainer}
         hideQueueControls
+        queueId={props.playlist.id}
         ListHeaderComponent={
           <View>
             <View style={styles.artworkImageContainer}>
@@ -42,7 +43,7 @@ const PlaylistTrackList = (props: IProps) => {
                 source={{
                   uri:
                     props.playlist.track.length > 0
-                      ? `${REACT_BACKEND_URL}/api/v1/images/track/${props.playlist.track[0]?.artwork}`
+                      ? `${REACT_BACKEND_URL}/api/v1/images/track/${props.playlist.track[0].artwork}`
                       : unKnownTrackImage,
                   priority: FastImage.priority.high,
                 }}
@@ -54,6 +55,7 @@ const PlaylistTrackList = (props: IProps) => {
             </Text>
             {search.length === 0 && props.playlist.track.length > 0 && (
               <QueueControls
+                queueId={props.playlist.id}
                 style={{ paddingTop: 24 }}
                 tracks={convertTrack(props.playlist.track)}
               />

@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchArtist } from "@/redux/slice/UserSlice";
 import { IUser } from "@/types/backend";
 import { useEffect } from "react";
 
@@ -23,9 +24,8 @@ export const useGetUserData = (fetchType: EUser) => {
 
   useEffect(
     () => {
-      const fetchData = async () => {
+      const fetchData = () => {
         if (fetchType === EUser.ARTIST) {
-          const { fetchArtist } = await import("redux/slice/UserSlice");
           dispatch(fetchArtist(`pageSize=100&pageNumber=1&username=${query}`));
         } else {
           //fetch user
@@ -37,8 +37,7 @@ export const useGetUserData = (fetchType: EUser) => {
     fetchType === EUser.ARTIST ? [query] : []
   );
 
-  const result =
-    fetchType === EUser.ARTIST ? { artists, isFetchingArtist, metaArtist } : {};
+  const result = { artists, isFetchingArtist, metaArtist };
 
   return result;
 };

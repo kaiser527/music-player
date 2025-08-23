@@ -32,6 +32,7 @@ interface IState {
   modalVisible: boolean;
   isDelete: boolean;
   deletePlaylistIds: string[];
+  dataInit: IPlaylist;
 }
 
 const initialState: IState = {
@@ -48,6 +49,11 @@ const initialState: IState = {
   modalVisible: false,
   isDelete: false,
   deletePlaylistIds: [],
+  dataInit: {
+    id: "",
+    name: "",
+    track: [],
+  },
 };
 
 const playlistSlice = createSlice({
@@ -65,6 +71,11 @@ const playlistSlice = createSlice({
     },
     setDeletePlaylistIds: (state, action: PayloadAction<string[]>) => {
       state.deletePlaylistIds = action.payload;
+    },
+    setDataInit: (state, action: PayloadAction<IPlaylist>) => {
+      state.dataInit.id = action.payload.id;
+      state.dataInit.name = action.payload.name;
+      state.dataInit.track = action.payload.track;
     },
   },
   extraReducers: (builder) => {
@@ -104,6 +115,7 @@ export const {
   setModalVisible,
   setDeletePlaylistIds,
   setIsDelete,
+  setDataInit,
 } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

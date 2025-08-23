@@ -3,7 +3,6 @@ import { compareArray } from "@/helpers/compareArray";
 import { useTrackQueue } from "@/hooks/track/useTrackQueue";
 import { defaultStyles } from "@/styles";
 import { Ionicons } from "@expo/vector-icons";
-import { usePathname } from "expo-router";
 import _ from "lodash";
 import React from "react";
 import {
@@ -18,13 +17,14 @@ import TrackPlayer, { Track } from "react-native-track-player";
 interface IProps {
   style: ViewStyle;
   tracks: Track[];
+  queueId?: string;
 }
 
 const QueueControls = (props: IProps) => {
   const { setActiveQueue } = useTrackQueue();
 
   const handlePlay = async () => {
-    await setActiveQueue();
+    setActiveQueue(props.queueId ?? "");
 
     const trackQueue = await TrackPlayer.getQueue();
 
@@ -43,7 +43,7 @@ const QueueControls = (props: IProps) => {
   };
 
   const handleShufflePlay = async () => {
-    await setActiveQueue();
+    setActiveQueue(props.queueId ?? "");
 
     const trackQueue = await TrackPlayer.getQueue();
 

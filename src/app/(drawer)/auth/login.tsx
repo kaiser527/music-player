@@ -2,6 +2,7 @@ import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
 import { useAppDispatch } from "@/redux/hooks";
+import { setUserLoginInfo } from "@/redux/slice/AccountSlice";
 import { callLogin, callResendCode } from "@/services/api";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,7 +56,6 @@ const LoginScreen = () => {
         ["access_token", res.result.access_token],
         ["refresh_token", res.result.refresh_token],
       ]);
-      const { setUserLoginInfo } = await import("redux/slice/AccountSlice");
       dispatch(setUserLoginInfo(res.result.user));
       handleReset();
       router.push("/");

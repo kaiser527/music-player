@@ -3,11 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Mutex } from "async-mutex";
 import axiosClient from "axios";
 import { REACT_BACKEND_URL } from "constants/utils";
-import {
-  resetAccountState,
-  setRefreshTokenAction,
-} from "redux/slice/AccountSlice";
-import { store } from "redux/store";
 
 interface AccessTokenResponse {
   access_token: string;
@@ -68,21 +63,10 @@ instance.interceptors.response.use(
         error.config.headers["Authorization"] = `Bearer ${access_token}`;
         return instance.request(error.config);
       } else {
-        store.dispatch(resetAccountState());
+        return Promise.reject({ type: "REFRESH_FAILED" });
       }
     }
 
-    if (
-      error.config &&
-      error.response &&
-      +error.response.status === 400 &&
-      error.config.url === "/api/v1/auth/refresh"
-    ) {
-      const message =
-        error?.response?.data?.message ?? "An error occurred, please login";
-      //dispatch redux action
-      store.dispatch(setRefreshTokenAction({ status: true, message }));
-    }
     return error?.response?.data ?? Promise.reject(error);
   }
 );

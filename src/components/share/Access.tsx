@@ -14,7 +14,7 @@ const Access = (props: IProps) => {
   // hideChildren = true => ko render children, ví dụ hide button (button này check quyền)
   const { permission, hideChildren = false } = props;
   const [allow, setAllow] = useState<boolean>(true);
-  const { user } = useGetAccount();
+  const { user } = useGetAccount(false);
   const permissions = user.role.permission;
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setIsDelete } from "@/redux/slice/PlaylistSlice";
 
 export const useToggleDeletePlaylist = () => {
   const isDeleteMode: boolean = useAppSelector(
@@ -7,8 +8,7 @@ export const useToggleDeletePlaylist = () => {
 
   const dispatch = useAppDispatch();
 
-  const setIsDeleteMode = async (value: boolean) => {
-    const { setIsDelete } = await import("redux/slice/PlaylistSlice");
+  const setIsDeleteMode = (value: boolean) => {
     dispatch(setIsDelete(value));
   };
 

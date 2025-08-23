@@ -1,4 +1,6 @@
+import PlaylistModal from "@/components/client/playlist/PlaylistModal";
 import LayoutApp from "@/components/share/LayoutApp";
+import { colors } from "@/constants/tokens";
 import { ScrollProvider } from "@/contexts/ScrollContext";
 import { useLogTrackPlayerState } from "@/hooks/track/useLogTrackPlayerState";
 import { useSetupTrackPlayer } from "@/hooks/track/useSetupTrackPlayer";
@@ -37,6 +39,7 @@ const RootLayout = () => {
                   <RootNavigation />
                   <StatusBar style="light" />
                   <FlashMessage position="bottom" />
+                  <PlaylistModal />
                 </ScrollProvider>
               </SafeAreaProvider>
             </ThemeProvider>
@@ -51,6 +54,16 @@ const RootNavigation = () => (
   <Stack>
     <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
     <Stack.Screen name="player" options={{ headerShown: false }} />
+    <Stack.Screen
+      name="(modals)/addToPlaylist"
+      options={{
+        headerTitle: "Add to Playlist",
+        headerStyle: { backgroundColor: colors.background },
+        headerTitleStyle: {
+          color: colors.text,
+        },
+      }}
+    />
   </Stack>
 );
 

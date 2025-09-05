@@ -20,6 +20,7 @@ import {
 import accountReducer from "./slice/AccountSlice";
 import favoriteReducer from "./slice/FavoriteSlice";
 import playlistReducer from "./slice/PlaylistSlice";
+import roleReducer from "./slice/RoleSlice";
 import trackReducer from "./slice/TrackSlice";
 import userReducer from "./slice/UserSlice";
 
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   favorite: favoriteReducer,
   user: userReducer,
   playlist: playlistReducer,
+  role: roleReducer,
 });
 
 const persistConfig = getPersistConfig({

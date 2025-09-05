@@ -13,7 +13,7 @@ const AdminLayout = () => {
       }}
     >
       <Drawer.Screen
-        name="user/index"
+        name="user/ListUser"
         options={{
           title: "Manage User",
           drawerIcon: ({ color }) => (

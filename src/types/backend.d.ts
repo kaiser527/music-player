@@ -4,11 +4,14 @@ export interface IBackendRes<T> {
   result: T;
 }
 
-export interface IModelPaginate<T> {
+export interface IModelPaginate<T> extends IMeta {
+  data: T[];
+}
+
+export interface IMeta {
   pageNumber: number;
   pageSize: number;
   totalPages: number;
-  data: T[];
 }
 
 export interface IAccount {
@@ -53,7 +56,7 @@ export interface IPermission {
 }
 
 export interface ITrack {
-  id?: string;
+  id: string;
   createdAt?: string;
   updatedAt?: string;
   title: string;

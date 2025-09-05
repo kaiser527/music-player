@@ -7,6 +7,7 @@ import {
   IModelPaginate,
   IPlaylist,
   IRegister,
+  IRole,
   ITrack,
   IUser,
 } from "@/types/backend";
@@ -60,6 +61,39 @@ export const callFetchArtist = (query: string) => {
     `/api/v1/user/artist?${query}`
   );
 };
+
+export const callFetchUser = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IUser>>>(`/api/v1/user?${query}`);
+};
+
+export const callCreateUser = (data: {
+  email: string;
+  username: string;
+  password: string;
+  image: string;
+  isActive: boolean;
+  accountType: string;
+  roleId: string;
+}) => {
+  return axios.post<IBackendRes<IUser>>("/api/v1/user", data);
+};
+
+export const callUpdateUser = (
+  id: string,
+  data: {
+    username: string;
+    image: string;
+    isActive: boolean;
+    accountType: string;
+    roleId: string;
+  }
+) => {
+  return axios.patch<IBackendRes<IUser>>(`/api/v1/user/${id}`, data);
+};
+
+export const callDeleteUser = (id: string) => {
+  return axios.delete<IBackendRes<IUser>>(`/api/v1/user/${id}`);
+};
 //----------------------user----------------------//
 
 //----------------------playlist----------------------//
@@ -97,3 +131,29 @@ export const callBulkDeletePlaylist = (playlistIds: string[]) => {
   );
 };
 //----------------------playlist----------------------//
+
+//----------------------role----------------------//
+export const callFetchRole = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IRole>>>(`/api/v1/role?${query}`);
+};
+//----------------------role----------------------//
+
+//----------------------file----------------------//
+export const callUploadingleFile = (
+  file: any,
+  folderType: string,
+  type: "TRACK" | "IMAGE"
+) => {
+  const bodyFormData = new FormData();
+  bodyFormData.append("fileUpload", file);
+  return axios<IBackendRes<{ fileName: string }>>({
+    method: "post",
+    url: `/api/v1/file/upload?file_type=${type}`,
+    data: bodyFormData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      folder_type: folderType,
+    },
+  });
+};
+//----------------------file----------------------//

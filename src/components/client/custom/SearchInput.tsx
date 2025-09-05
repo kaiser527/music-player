@@ -19,7 +19,7 @@ const SearchInput = (props: IProps) => {
     <View style={styles.container}>
       <View
         style={{
-          ...styles.containerInput,
+          ...styles.inputContainer,
           marginBottom: props.isScrolled ? 12 : 20,
         }}
       >
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 15,
   },
-  containerInput: {
+  inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#1a1a1a",

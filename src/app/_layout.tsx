@@ -7,13 +7,15 @@ import { useSetupTrackPlayer } from "@/hooks/track/useSetupTrackPlayer";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import FlashMessage from "react-native-flash-message";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "redux/store";
+
+React.useInsertionEffect = useEffect;
 
 SplashScreen.preventAutoHideAsync();
 

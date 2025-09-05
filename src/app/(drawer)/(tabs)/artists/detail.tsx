@@ -17,21 +17,23 @@ const ArtistDetailScreen = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
-        <ArtistTrackList
-          artist={{
-            ...parsedArtist,
-            track: parsedArtist.track.map(
-              (item) =>
-                ({
-                  ...item,
-                  url: convertUrl(item.url),
-                  user: {
-                    username: parsedArtist.username,
-                  },
-                } as any)
-            ),
-          }}
-        />
+        {parsedArtist && (
+          <ArtistTrackList
+            artist={{
+              ...parsedArtist,
+              track: parsedArtist.track.map(
+                (item) =>
+                  ({
+                    ...item,
+                    url: convertUrl(item.url),
+                    user: {
+                      username: parsedArtist.username,
+                    },
+                  } as any)
+              ),
+            }}
+          />
+        )}
       </ScrollView>
     </View>
   );

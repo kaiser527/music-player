@@ -1,6 +1,7 @@
 import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
+import { inputValidator } from "@/helpers/validator";
 import {
   callResendCode,
   callResetPassword,
@@ -43,20 +44,19 @@ const VerifyScreen = () => {
   };
 
   const handleConfirm = async () => {
-    const checkInput =
+    const validateFields =
       isForgot === 1
-        ? !codeRef.current ||
-          !passwordRef.current ||
-          !confirmPasswordRef.current
-        : !codeRef.current;
-
-    if (checkInput) {
+        ? [
+            { ref: codeRef, name: "code" },
+            { ref: passwordRef, name: "password" },
+            { ref: confirmPasswordRef, name: "confirm password" },
+          ]
+        : [{ ref: codeRef, name: "code" }];
+    const { isValid, output } = inputValidator(validateFields);
+    if (!isValid) {
       showMessage({
         message: "Error occurred",
-        description:
-          isForgot === 1
-            ? "All field must be filled"
-            : "Code must be not empty",
+        description: `${output} is not allowed to be empty`,
         type: "danger",
       });
       return;

@@ -1,3 +1,4 @@
+import { sortTrack } from "@/helpers/convertTrack";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { useGetFavoriteSlice } from "@/hooks/data/useGetFavoriteSlice";
 import { useTrackQueue } from "@/hooks/track/useTrackQueue";
@@ -26,8 +27,7 @@ const TrackShortCutsMenu = (props: Props) => {
 
   const parsedPlaylist: IPlaylist = JSON.parse(playlist ?? "{}");
   const favorite = tracks.find((item) => item.url === props.track.url);
-  const forbiddenIcons = ["🎵", "🎤", "🌱"];
-  const hasForbiddenIcon = forbiddenIcons.some((icon) =>
+  const hasForbiddenIcon = ["🎵", "🎤", "🌱"].some((icon) =>
     parsedPlaylist.name?.includes(icon)
   );
 
@@ -70,11 +70,22 @@ const TrackShortCutsMenu = (props: Props) => {
                 (item) => item.url === props.track.url
               );
               if (index > -1) await TrackPlayer.remove(index);
-            }
-            router.replace({
-              pathname: "/playlists/detail",
-              params: { playlist: JSON.stringify(res.result) },
-            });
+              router.replace({
+                pathname: "/playlists/detail",
+                params: {
+                  playlist: JSON.stringify({
+                    ...res.result,
+                    track: sortTrack(res.result.track, trackQueue),
+                  }),
+                },
+              });
+            } else
+              router.replace({
+                pathname: "/playlists/detail",
+                params: {
+                  playlist: JSON.stringify(res.result),
+                },
+              });
           } else
             showMessage({
               message: "Error occurred",

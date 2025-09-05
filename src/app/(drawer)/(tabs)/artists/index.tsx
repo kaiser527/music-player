@@ -9,7 +9,7 @@ import { ScrollView, View } from "react-native";
 
 const ArtistsScreen = () => {
   const { handleScroll } = useScroll();
-  const { artists, isFetchingArtist } = useGetUserData(EUser.ARTIST);
+  const { data, isFetching } = useGetUserData(EUser.ARTIST, true);
 
   const scrollRef = useRef<ScrollView>(null);
 
@@ -25,8 +25,8 @@ const ArtistsScreen = () => {
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
         <ArtistList
-          isFetchingArtist={isFetchingArtist}
-          artists={artists}
+          isFetchingArtist={isFetching}
+          artists={data}
           scrollEnabled={false}
         />
       </ScrollView>

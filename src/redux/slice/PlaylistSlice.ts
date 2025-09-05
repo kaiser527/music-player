@@ -1,5 +1,5 @@
 import { callFetchGlobalPlaylist, callFetchUserPlaylist } from "@/services/api";
-import { IPlaylist } from "@/types/backend";
+import { IMeta, IPlaylist } from "@/types/backend";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const fetchGlobalPlaylist = createAsyncThunk(
@@ -23,11 +23,7 @@ interface IState {
   isFetchingUser: boolean;
   globalPlaylist: IPlaylist[];
   userPlaylist: IPlaylist[];
-  metaUser: {
-    pageNumber: number;
-    pageSize: number;
-    totalPages: number;
-  };
+  metaUser: IMeta;
   query: string;
   modalVisible: boolean;
   isDelete: boolean;

@@ -17,15 +17,17 @@ const PlaylistDetailScreen = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={{ paddingHorizontal: screenPadding.horizontal }}
       >
-        <PlaylistTrackList
-          playlist={{
-            ...parsedPlaylist,
-            track: parsedPlaylist.track.map((item) => ({
-              ...item,
-              url: convertUrl(item.url),
-            })),
-          }}
-        />
+        {parsedPlaylist && (
+          <PlaylistTrackList
+            playlist={{
+              ...parsedPlaylist,
+              track: parsedPlaylist.track.map((item) => ({
+                ...item,
+                url: convertUrl(item.url),
+              })),
+            }}
+          />
+        )}
       </ScrollView>
     </View>
   );

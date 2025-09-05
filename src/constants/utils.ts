@@ -1,6 +1,13 @@
-export const WHITELIST_REDUCER = ["account", "favorite", "track.activeQueueId"];
+export const WHITELIST_REDUCER = [
+  "account.isAuthenticated",
+  "account.user",
+  "favorite",
+  "track.activeQueueId",
+];
 
 export const REACT_BACKEND_URL = "http://10.0.2.2:3000";
 
 export const unKnownArtistImage = `${REACT_BACKEND_URL}/api/v1/images/user/default-1752056150533.png`;
 export const unKnownTrackImage = `${REACT_BACKEND_URL}/api/v1/images/track/unknown_track.png`;
+
+export const formattedDate = "YYYY-MM-DD";

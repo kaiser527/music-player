@@ -1,6 +1,7 @@
 import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
+import { inputValidator } from "@/helpers/validator";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUserLoginInfo } from "@/redux/slice/AccountSlice";
 import { callLogin, callResendCode } from "@/services/api";
@@ -37,10 +38,15 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
-    if (!emailRef.current || !passwordRef.current) {
+    const validateFields = [
+      { ref: emailRef, name: "email" },
+      { ref: passwordRef, name: "password" },
+    ];
+    const { isValid, output } = inputValidator(validateFields);
+    if (!isValid) {
       showMessage({
         message: "Error occurred",
-        description: "email and password is not allowed to be empty",
+        description: `${output} is not allowed to be empty`,
         type: "danger",
       });
       return;

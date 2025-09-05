@@ -3,7 +3,7 @@ import {
   fetchGlobalPlaylist,
   fetchUserPlaylist,
 } from "@/redux/slice/PlaylistSlice";
-import { IPlaylist } from "@/types/backend";
+import { IMeta, IPlaylist } from "@/types/backend";
 import { useEffect } from "react";
 
 export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
@@ -22,11 +22,7 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
   const isAuthenticated: boolean = useAppSelector(
     (state) => state.account.isAuthenticated
   );
-  const metaUser: {
-    pageNumber: number;
-    pageSize: number;
-    totalPages: number;
-  } = useAppSelector((state) => state.playlist.metaUser);
+  const metaUser: IMeta = useAppSelector((state) => state.playlist.metaUser);
   const query: string = useAppSelector((state) => state.playlist.query);
 
   const dispatch = useAppDispatch();

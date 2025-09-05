@@ -17,3 +17,19 @@ export const convertTrack = (tracks: ITrack[]) => {
 
   return convertedTracks;
 };
+
+export const sortTrack = (track: ITrack[], trackQueue: Track[]) => {
+  const queueUrls = trackQueue.map((t) => t.url);
+
+  return track.slice().sort((a, b) => {
+    const indexA = queueUrls.indexOf(convertUrl(a.url));
+    const indexB = queueUrls.indexOf(convertUrl(b.url));
+
+    // If a track is not in queue, push it to the end
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+  });
+};

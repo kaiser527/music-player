@@ -1,5 +1,5 @@
 import { callFetchTrackById, callFetchTrackPaginate } from "@/services/api";
-import { ITrack } from "@/types/backend";
+import { IMeta, ITrack } from "@/types/backend";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const fetchTrack = createAsyncThunk(
@@ -21,11 +21,7 @@ export const fetchTrackById = createAsyncThunk(
 interface IState {
   isFetching: boolean;
   isFetchingSingle: boolean;
-  meta: {
-    pageNumber: number;
-    pageSize: number;
-    totalPages: number;
-  };
+  meta: IMeta;
   data: ITrack[];
   singleTrack: ITrack;
   query: string;

@@ -1,6 +1,7 @@
 import BackToPreviousIcon from "@/components/share/BackToPreviousIcon";
 import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { colors, fontSize } from "@/constants/tokens";
+import { inputValidator } from "@/helpers/validator";
 import { callRegister } from "@/services/api";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -35,10 +36,16 @@ const RegisterScreen = () => {
   };
 
   const handleRegister = async () => {
-    if (!emailRef.current || !passwordRef.current || !usernameRef.current) {
+    const validateFields = [
+      { ref: emailRef, name: "email" },
+      { ref: passwordRef, name: "password" },
+      { ref: usernameRef, name: "username" },
+    ];
+    const { isValid, output } = inputValidator(validateFields);
+    if (!isValid) {
       showMessage({
         message: "Error occurred",
-        description: "All fields are required",
+        description: `${output} is not allowed to be empty`,
         type: "danger",
       });
       return;

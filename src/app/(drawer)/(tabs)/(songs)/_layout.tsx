@@ -1,7 +1,7 @@
 import CustomHeader from "@/components/client/custom/CustomHeader";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
-import { handleChangeQuery } from "@/redux/slice/TrackSlice";
+import { handleChangeTitleFilter } from "@/redux/slice/TrackSlice";
 import { defaultStyles } from "@/styles";
 import {
   StackScreenWithSearchBar,
@@ -17,7 +17,7 @@ const SongsScreenLayout = () => {
   const dispatch = useAppDispatch();
 
   const handleChangInput = useCallback((text: string) => {
-    dispatch(handleChangeQuery(text));
+    dispatch(handleChangeTitleFilter(text));
   }, []);
 
   return (

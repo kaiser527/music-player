@@ -3,13 +3,13 @@ import React, { PropsWithChildren } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Popover from "react-native-popover-view";
 
-type Props = {
+type Props = PropsWithChildren<{
   handleDelete: () => Promise<void>;
   table: string;
   visiblePopup: string;
   setVisiblePopup: (v: string) => void;
   marker: string;
-} & PropsWithChildren;
+}>;
 
 const DeletePopup = (props: Props) => {
   return (
@@ -52,7 +52,7 @@ const DeletePopup = (props: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 9,
     paddingHorizontal: 12,
     backgroundColor: "#1a1a1a",
   },

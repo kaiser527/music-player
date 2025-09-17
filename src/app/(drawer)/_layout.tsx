@@ -38,7 +38,7 @@ const DrawerLayout = () => {
             headerShown: false,
             title: "Admin",
             drawerIcon: ({ color }) => (
-              <FontAwesome6 name="gear" size={20} color={color} />
+              <FontAwesome6 name="gear" size={17} color={color} />
             ),
           }}
         />

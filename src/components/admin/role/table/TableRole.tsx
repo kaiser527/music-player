@@ -3,49 +3,47 @@ import LoadingSpinner from "@/components/share/LoadingSpinner";
 import { ALL_PERMISSION } from "@/constants/permissions";
 import { colors, fontSize } from "@/constants/tokens";
 import { formattedDate } from "@/constants/utils";
-import { EUser, useGetUserData } from "@/hooks/data/useGetUserData";
+import { useGetRoleData } from "@/hooks/data/useGetRoleData";
 import { useAppDispatch } from "@/redux/hooks";
-import { fetchUser } from "@/redux/slice/UserSlice";
-import { callDeleteUser } from "@/services/api";
-import { IUser } from "@/types/backend";
+import { fetchRole } from "@/redux/slice/RoleSlice";
+import { callDeleteRole } from "@/services/api";
+import { IRole } from "@/types/backend";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import { ScrollView } from "react-native-gesture-handler";
 import { DateType } from "react-native-ui-datepicker";
 import CreateButton from "../../table/CreateButton";
 import Pagination from "../../table/Pagination";
 import TableFilter from "../../table/TableFilter";
 import TableHeader from "../../table/TableHeader";
-import ModalUser from "../ModalUser";
-import UserTableData from "./UserTableData";
+import ModalRole from "../modal/ModalRole";
+import RoleTableData from "./RoleTableData";
 
 const state = {
   tableHead: [
     "No",
-    "Email",
-    "Username",
-    "Role",
+    "Name",
+    "Description",
+    "Is active",
     "Created At",
     "Updated At",
     "Action",
   ],
-  widthArr: [50, 200, 150, 120, 180, 180, 150],
+  widthArr: [50, 150, 200, 120, 180, 180, 150],
 };
 
-const TableUser = () => {
-  const { isFetching, setQuery, meta, data } = useGetUserData(EUser.USER, true);
+const TableRole = () => {
+  const { roles, meta, isFetching, setQuery } = useGetRoleData(true);
 
   const [isShowModal, setIsShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
   const [sortField, setSortField] = useState<"createdAt" | "updatedAt" | null>(
     null
   );
-  const [dataInit, setDataInit] = useState<IUser | null>(null);
+  const [name, setName] = useState("");
+  const [active, setActive] = useState("");
+  const [dataInit, setDataInit] = useState<IRole | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [dateRange, setDateRange] = useState<{
     startDate: DateType | null;
@@ -60,14 +58,11 @@ const TableUser = () => {
   useEffect(() => {
     if (setQuery) {
       let query = `pageSize=9&pageNumber=${currentPage}`;
-      if (email && email.length > 0) {
-        query += `&email=${email}`;
+      if (name && name.length > 0) {
+        query += `&name=${name}`;
       }
-      if (username && username.length > 0) {
-        query += `&username=${username}`;
-      }
-      if (role && role.length > 0) {
-        query += `&role=${role}`;
+      if (active === "no" || active === "yes") {
+        query += `&isActive=${active === "yes"}`;
       }
       if (sortField === "createdAt") {
         query += `&sortByCreatedAt=${sortOrder === "asc"}`;
@@ -87,42 +82,21 @@ const TableUser = () => {
       }
       setQuery(query);
     }
-  }, [currentPage, email, username, role, sortOrder, sortField, dateRange]);
-
-  const fields = [
-    {
-      name: "Email",
-      value: email,
-      placeholder: "Filter by email",
-      onChange: setEmail,
-    },
-    {
-      name: "Username",
-      value: username,
-      placeholder: "Filter by username",
-      onChange: setUsername,
-    },
-    {
-      name: "Role",
-      value: role,
-      placeholder: "Filter by role",
-      onChange: setRole,
-    },
-  ];
+  }, [currentPage, sortOrder, active, name, sortField, dateRange]);
 
   const handlePressAction = (id: string, type: "EDIT" | "DELETE") => {
-    const user = data.find((item) => item.id === id);
-    if (user) {
-      setDataInit(user);
+    const role = roles.find((item) => item.id === id);
+    if (role) {
+      setDataInit(role);
       type === "EDIT" && setIsShowModal(true);
     }
   };
 
   const handleDelete = async () => {
     if (dataInit) {
-      const res = await callDeleteUser(dataInit.id ?? "");
+      const res = await callDeleteRole(dataInit.id ?? "");
       if (res.result) {
-        dispatch(fetchUser(`pageSize=9&pageNumber=${currentPage}`));
+        dispatch(fetchRole(`pageSize=8&pageNumber=${currentPage}`));
         setDataInit(null);
       } else {
         showMessage({
@@ -134,14 +108,29 @@ const TableUser = () => {
     }
   };
 
+  const fields = [
+    {
+      name: "Name",
+      value: name,
+      placeholder: "Filter by name",
+      onChange: setName,
+    },
+    {
+      name: "Active",
+      value: active,
+      placeholder: "Filter by active",
+      onChange: setActive,
+    },
+  ];
+
   return (
     <>
       <ScrollView contentContainerStyle={{ paddingBottom: 10 }}>
         <View style={styles.tableHeader}>
-          <Text style={styles.tableTitle}>List User</Text>
-          <Access permission={ALL_PERMISSION.USER.CREATE} hideChildren>
+          <Text style={styles.tableTitle}>List Role</Text>
+          <Access permission={ALL_PERMISSION.ROLE.CREATE} hideChildren>
             <CreateButton
-              text="Create User"
+              text="Create Role"
               onPress={() => setIsShowModal(true)}
             />
           </Access>
@@ -165,7 +154,7 @@ const TableUser = () => {
               </View>
             ) : (
               <ScrollView style={styles.dataWrapper}>
-                <UserTableData
+                <RoleTableData
                   handleDelete={handleDelete}
                   handlePressAction={handlePressAction}
                   currentPage={currentPage}
@@ -182,12 +171,12 @@ const TableUser = () => {
           meta={meta}
         />
       )}
-      <ModalUser
+      <ModalRole
+        currentPage={currentPage}
         setDataInit={setDataInit}
         dataInit={dataInit}
         isOpen={isShowModal}
         setIsOpen={setIsShowModal}
-        currentPage={currentPage}
       />
     </>
   );
@@ -211,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TableUser;
+export default TableRole;

@@ -5,6 +5,7 @@ import {
   IForgotPassword,
   IGetAccount,
   IModelPaginate,
+  IPermission,
   IPlaylist,
   IRegister,
   IRole,
@@ -18,8 +19,11 @@ export const callLogin = (data: { email: string; password: string }) => {
   return axios.post<IBackendRes<IAccount>>("/api/v1/auth/login", data);
 };
 
-export const callLogout = () => {
-  return axios.post<IBackendRes<void>>("/api/v1/auth/logout");
+export const callLogout = (data: {
+  accessToken: string;
+  refreshToken: string;
+}) => {
+  return axios.post<IBackendRes<void>>("/api/v1/auth/logout", data);
 };
 
 export const callRegister = (data: IRegister) => {
@@ -48,10 +52,6 @@ export const callFetchTrackPaginate = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<ITrack>>>(
     `/api/v1/track?${query}`
   );
-};
-
-export const callFetchTrackById = (id: string) => {
-  return axios.get<IBackendRes<ITrack>>(`/api/v1/track/${id}`);
 };
 //----------------------track----------------------//
 
@@ -119,6 +119,7 @@ export const callUpdatePlaylist = (
   data: {
     name: string;
     trackIds: string[];
+    action: "ADD" | "REPLACE";
   }
 ) => {
   return axios.patch<IBackendRes<IPlaylist>>(`/api/v1/playlist/${id}`, data);
@@ -136,7 +137,40 @@ export const callBulkDeletePlaylist = (playlistIds: string[]) => {
 export const callFetchRole = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<IRole>>>(`/api/v1/role?${query}`);
 };
+
+export const callDeleteRole = (id: string) => {
+  return axios.delete<IBackendRes<IRole>>(`/api/v1/role/${id}`);
+};
+
+export const callCreateRole = (data: {
+  name: string;
+  description: string;
+  isActive: boolean;
+  permissionIds: string[];
+}) => {
+  return axios.post<IBackendRes<IRole>>("/api/v1/role", data);
+};
+
+export const callUpdateRole = (
+  id: string,
+  data: {
+    name: string;
+    description: string;
+    isActive: boolean;
+    permissionIds: string[];
+  }
+) => {
+  return axios.patch<IBackendRes<IRole>>(`/api/v1/role/${id}`, data);
+};
 //----------------------role----------------------//
+
+//----------------------permission----------------------//
+export const callFetchPermission = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IPermission>>>(
+    `/api/v1/permission?${query}`
+  );
+};
+//----------------------permission----------------------//
 
 //----------------------file----------------------//
 export const callUploadingleFile = (

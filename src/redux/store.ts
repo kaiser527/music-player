@@ -23,6 +23,7 @@ import playlistReducer from "./slice/PlaylistSlice";
 import roleReducer from "./slice/RoleSlice";
 import trackReducer from "./slice/TrackSlice";
 import userReducer from "./slice/UserSlice";
+import permissionReducer from "./slice/PermissionSlice";
 
 const rootReducer = combineReducers({
   account: accountReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   playlist: playlistReducer,
   role: roleReducer,
+  permission: permissionReducer,
 });
 
 const persistConfig = getPersistConfig({

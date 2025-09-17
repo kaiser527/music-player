@@ -1,5 +1,5 @@
-import CloseButton from "@/components/share/CloseButton";
-import { colors, fontSize } from "@/constants/tokens";
+import CustomModal from "@/components/admin/modal/CustomModal";
+import { colors } from "@/constants/tokens";
 import { REACT_BACKEND_URL } from "@/constants/utils";
 import { inputValidator, selectValidator } from "@/helpers/validator";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
@@ -10,12 +10,12 @@ import { fetchUser } from "@/redux/slice/UserSlice";
 import { callCreateUser, callUpdateUser } from "@/services/api";
 import { IUser } from "@/types/backend";
 import { FontAwesome6 } from "@expo/vector-icons";
+import _ from "lodash";
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { TextInput } from "react-native-gesture-handler";
-import ModalFieldList from "../modal";
-import ModalButton from "../modal/ModalButton";
+import ModalFieldList from "../modal/ModalFieldList";
 import Upload from "../modal/Upload";
 
 interface IProps {
@@ -154,7 +154,7 @@ const ModalUser = (props: IProps) => {
             roleId: role,
           });
     if (res.result) {
-      dispatch(fetchUser(`pageSize=8&pageNumber=${props.currentPage}`));
+      dispatch(fetchUser(`pageSize=9&pageNumber=${props.currentPage}`));
       handleClose();
       if (user.id === props.dataInit?.id) {
         dispatch(setUserLoginInfo(res.result));
@@ -189,6 +189,7 @@ const ModalUser = (props: IProps) => {
       placeholder: "Enter password",
       valueRef: passwordRef,
       inputRef: inputPasswordRef,
+      disable: _.isNull(props.dataInit),
     },
   ];
 
@@ -238,67 +239,25 @@ const ModalUser = (props: IProps) => {
   ];
 
   return (
-    <Modal visible={props.isOpen} transparent={true} animationType="slide">
-      <View style={styles.modalBackground}>
-        <View style={styles.modalContent}>
-          <CloseButton
-            style={{ position: "absolute", top: 15, right: 15 }}
-            onPress={handleClose}
-          />
-          <Text style={styles.modalTitle}>
-            {props.dataInit ? "Update" : "Create"} user
-          </Text>
-          <View style={styles.modalBody}>
-            <ModalFieldList
-              fields={fields}
-              selects={selects}
-              switchs={switchs}
-            />
-            <Upload
-              setPreviewUri={setPreviewUri}
-              previewUri={previewUri}
-              fileNameRef={fileNameRef}
-            />
-            <ModalButton
-              isLoading={isLoading}
-              handleConfirm={handleConfirm}
-              dataInit={props.dataInit}
-            />
-          </View>
-        </View>
-      </View>
-    </Modal>
+    <CustomModal
+      dataInit={props.dataInit}
+      isOpen={props.isOpen}
+      isLoading={isLoading}
+      title="user"
+      handleConfirm={handleConfirm}
+      handleClose={handleClose}
+    >
+      <ModalFieldList fields={fields} selects={selects} switchs={switchs} />
+      <Upload
+        setPreviewUri={setPreviewUri}
+        previewUri={previewUri}
+        fileNameRef={fileNameRef}
+      />
+    </CustomModal>
   );
 };
 
 const styles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    alignItems: "center",
-  },
-  modalContent: {
-    width: "88%",
-    backgroundColor: "#1a1a1a",
-    borderRadius: 10,
-    marginTop: 150,
-  },
-  modalTitle: {
-    fontSize: fontSize.sm - 0.5,
-    fontWeight: "bold",
-    color: colors.text,
-    marginTop: 14,
-    marginLeft: 14,
-    marginBottom: 10,
-  },
-  modalBody: {
-    paddingHorizontal: 15,
-    paddingBottom: 15,
-    paddingTop: 8,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 14,
-  },
   icon: {
     marginRight: 8.5,
     marginTop: 1.5,

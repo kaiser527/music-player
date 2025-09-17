@@ -1,3 +1,4 @@
+import { IRole } from "@/types/backend";
 import { RefObject } from "react";
 
 export const inputValidator = (
@@ -28,4 +29,18 @@ export const selectValidator = (fields: { label: string; value: string }[]) => {
   });
 
   return { isValid, output };
+};
+
+export const isIRoleValidator = (obj: any): obj is IRole => {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    typeof obj.name === "string" &&
+    typeof obj.description === "string" &&
+    Array.isArray(obj.permission)
+  );
+};
+
+export const isIRoleArrayValidator = (data: any): data is IRole[] => {
+  return Array.isArray(data) && data.every(isIRoleValidator);
 };

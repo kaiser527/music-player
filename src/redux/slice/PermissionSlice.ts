@@ -1,11 +1,11 @@
-import { callFetchRole } from "@/services/api";
-import { IMeta, IRole } from "@/types/backend";
+import { callFetchPermission } from "@/services/api";
+import { IMeta, IPermission } from "@/types/backend";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const fetchRole = createAsyncThunk(
-  "role/fetchRole",
+export const fetchPermission = createAsyncThunk(
+  "permission/fetchPermission",
   async (query: string) => {
-    const response = await callFetchRole(query);
+    const response = await callFetchPermission(query);
     return response;
   }
 );
@@ -13,7 +13,7 @@ export const fetchRole = createAsyncThunk(
 interface IState {
   isFetching: boolean;
   meta: IMeta;
-  data: IRole[];
+  data: IPermission[];
   query: string;
 }
 
@@ -28,8 +28,8 @@ const initialState: IState = {
   data: [],
 };
 
-const roleSlice = createSlice({
-  name: "role",
+const permissionSlice = createSlice({
+  name: "permission",
   initialState,
   reducers: {
     handleChangeQuery: (state, action: PayloadAction<string>) => {
@@ -37,15 +37,15 @@ const roleSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchRole.pending, (state, action) => {
+    builder.addCase(fetchPermission.pending, (state, action) => {
       state.isFetching = true;
     });
 
-    builder.addCase(fetchRole.rejected, (state, action) => {
+    builder.addCase(fetchPermission.rejected, (state, action) => {
       state.isFetching = false;
     });
 
-    builder.addCase(fetchRole.fulfilled, (state, action) => {
+    builder.addCase(fetchPermission.fulfilled, (state, action) => {
       state.isFetching = false;
       state.meta.totalPages = action.payload.result.totalPages;
       state.meta.pageSize = action.payload.result.pageSize;
@@ -55,6 +55,6 @@ const roleSlice = createSlice({
   },
 });
 
-export const { handleChangeQuery } = roleSlice.actions;
+export const { handleChangeQuery } = permissionSlice.actions;
 
-export default roleSlice.reducer;
+export default permissionSlice.reducer;

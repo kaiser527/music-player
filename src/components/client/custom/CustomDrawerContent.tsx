@@ -33,15 +33,23 @@ const CustomDrawerContent = (props: CustomDrawerProps) => {
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
-    await callLogout();
-
-    dispatch(setLogoutAction({}));
-    await AsyncStorage.removeItem("refresh_token");
-
-    showMessage({
-      message: "Logout success",
-      type: "success",
+    const tokens = await AsyncStorage.multiGet([
+      "access_token",
+      "refresh_token",
+    ]);
+    const res = await callLogout({
+      accessToken: tokens[0][1] ?? "",
+      refreshToken: tokens[1][1] ?? "",
     });
+    if (res.code !== 1000) {
+      showMessage({
+        message: "Error occurred",
+        description: res.message,
+        type: "danger",
+      });
+      return;
+    }
+    dispatch(setLogoutAction({}));
   };
 
   return (

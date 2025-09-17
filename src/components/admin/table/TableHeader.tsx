@@ -1,7 +1,7 @@
 import { colors } from "@/constants/tokens";
 import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Row, Table } from "react-native-table-component";
 
 interface IProps {
@@ -9,22 +9,13 @@ interface IProps {
   setSortField: (v: "createdAt" | "updatedAt" | null) => void;
   sortOrder: "asc" | "desc";
   setSortOrder: (v: "asc" | "desc") => void;
+  state: {
+    tableHead: string[];
+    widthArr: number[];
+  };
 }
 
-const state = {
-  tableHead: [
-    "No",
-    "Email",
-    "Username",
-    "Role",
-    "Created At",
-    "Updated At",
-    "Action",
-  ],
-  widthArr: [50, 200, 150, 120, 180, 180, 150],
-};
-
-const UserTableHeader = (props: IProps) => {
+const TableHeader = (props: IProps) => {
   const handleSort = (field: "createdAt" | "updatedAt") => {
     if (props.sortField !== field) {
       props.setSortField(field);
@@ -40,7 +31,7 @@ const UserTableHeader = (props: IProps) => {
   return (
     <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
       <Row
-        data={state.tableHead.map((head) => {
+        data={props.state.tableHead.map((head) => {
           if (head === "Created At" || head === "Updated At") {
             const field = head === "Created At" ? "createdAt" : "updatedAt";
             const isActive = props.sortField === field;
@@ -77,7 +68,7 @@ const UserTableHeader = (props: IProps) => {
             </Text>
           );
         })}
-        widthArr={state.widthArr}
+        widthArr={props.state.widthArr}
         style={styles.header}
       />
     </Table>
@@ -93,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserTableHeader;
+export default TableHeader;

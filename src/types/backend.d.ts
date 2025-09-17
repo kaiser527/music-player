@@ -53,6 +53,7 @@ export interface IPermission {
   apiPath: string;
   method: string;
   module: string;
+  isChecked?: boolean;
 }
 
 export interface ITrack {

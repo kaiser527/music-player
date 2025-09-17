@@ -24,7 +24,7 @@ interface IState {
   globalPlaylist: IPlaylist[];
   userPlaylist: IPlaylist[];
   metaUser: IMeta;
-  query: string;
+  filter: string;
   modalVisible: boolean;
   isDelete: boolean;
   deletePlaylistIds: string[];
@@ -36,7 +36,7 @@ const initialState: IState = {
   isFetchingUser: true,
   globalPlaylist: [],
   userPlaylist: [],
-  query: "",
+  filter: "",
   metaUser: {
     pageNumber: 0,
     pageSize: 0,
@@ -56,8 +56,8 @@ const playlistSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
-    handleChangeQuery: (state, action: PayloadAction<string>) => {
-      state.query = action.payload;
+    handleChangeFilter: (state, action: PayloadAction<string>) => {
+      state.filter = action.payload;
     },
     setModalVisible: (state, action: PayloadAction<boolean>) => {
       state.modalVisible = action.payload;
@@ -107,7 +107,7 @@ const playlistSlice = createSlice({
 });
 
 export const {
-  handleChangeQuery,
+  handleChangeFilter,
   setModalVisible,
   setDeletePlaylistIds,
   setIsDelete,

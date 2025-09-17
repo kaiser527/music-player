@@ -7,6 +7,7 @@ import { callUpdatePlaylist } from "@/services/api";
 import { defaultStyles } from "@/styles";
 import { IPlaylist, ITrack } from "@/types/backend";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import _ from "lodash";
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import { showMessage } from "react-native-flash-message";
@@ -30,9 +31,14 @@ const addToPlaylist = () => {
   );
 
   const handlePlaylistPress = useCallback(async (playlist: IPlaylist) => {
+    const trackIds = (playlist.track ?? []).map((t) => t.id);
+    if (!trackIds.includes(parsedTrack.id)) {
+      trackIds.push(parsedTrack.id);
+    }
     const res = await callUpdatePlaylist(playlist.id ?? "", {
       name: playlist.name,
-      trackIds: [...playlist.track, parsedTrack].map((item) => item.id),
+      action: "ADD",
+      trackIds,
     });
     if (res.result) {
       router.replace("/");
@@ -67,7 +73,7 @@ const addToPlaylist = () => {
       />
       <PlaylistList
         handlePlaylistPress={handlePlaylistPress}
-        isFetching={isFetching}
+        isFetching={isFetching || _.isEmpty(parsedTrack)}
         playlists={filteredPlaylists}
       />
     </SafeAreaView>

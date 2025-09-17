@@ -16,6 +16,7 @@ interface IProps {
     label: string;
     searchPlaceholder?: string;
     isSearch?: boolean;
+    fullWidth?: boolean;
   }[];
 }
 
@@ -42,7 +43,10 @@ const SelectFields = (props: IProps) => {
           };
 
           return (
-            <View style={{ width: "47%" }} key={`select-${index}`}>
+            <View
+              style={{ width: item.fullWidth ? "100%" : "47.7%" }}
+              key={`select-${index}`}
+            >
               <View style={{ marginTop: 5 }} key={`select-${index}`}>
                 {renderLabel()}
                 <Dropdown

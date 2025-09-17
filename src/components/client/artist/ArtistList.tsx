@@ -1,5 +1,5 @@
-import ItemDivider from "@/components/client/ItemSeparator";
 import ListEmpty from "@/components/client/ListEmpty";
+import ItemDivider from "@/components/share/ItemSeparator";
 import { IUser } from "@/types/backend";
 import React from "react";
 import { FlatList, FlatListProps } from "react-native";

@@ -58,6 +58,7 @@ const TrackShortCutsMenu = (props: Props) => {
         if (pathName === "/playlists/detail" && parsedPlaylist.id) {
           const res = await callUpdatePlaylist(parsedPlaylist.id, {
             name: parsedPlaylist.name,
+            action: "REPLACE",
             trackIds: parsedPlaylist.track
               .filter((item) => item.id !== props.track.id)
               .map((item) => item.id ?? ""),

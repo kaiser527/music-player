@@ -23,7 +23,7 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
     (state) => state.account.isAuthenticated
   );
   const metaUser: IMeta = useAppSelector((state) => state.playlist.metaUser);
-  const query: string = useAppSelector((state) => state.playlist.query);
+  const filter: string = useAppSelector((state) => state.playlist.filter);
 
   const dispatch = useAppDispatch();
 
@@ -35,7 +35,7 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
             dispatch(fetchGlobalPlaylist());
           } else {
             dispatch(
-              fetchUserPlaylist(`pageSize=100&pageNumber=1&name=${query}`)
+              fetchUserPlaylist(`pageSize=100&pageNumber=1&name=${filter}`)
             );
           }
         } else {
@@ -44,19 +44,18 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
       };
       if (isFetch) fetchPlaylist();
     },
-    isGlobal ? [isAuthenticated && query] : []
+    isGlobal ? [isAuthenticated && filter] : []
   );
 
   return {
     playlists: isAuthenticated
       ? userPlaylists
       : globalPlaylists.filter((item) =>
-          query.length > 0
-            ? item.name.toLocaleLowerCase().includes(query)
+          filter.length > 0
+            ? item.name.toLocaleLowerCase().includes(filter)
             : item
         ),
     isFetching: isAuthenticated ? isFetchingUser : isFetchingGlobal,
     meta: isAuthenticated ? metaUser : {},
-    query,
   };
 };

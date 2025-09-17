@@ -1,8 +1,8 @@
 import React, { ReactNode, RefObject } from "react";
-import { TextInput } from "react-native-gesture-handler";
 import InputFields from "./InputFields";
 import SelectFields from "./SelectFields";
 import SwitchFields from "./SwitchFields";
+import { TextInput } from "react-native";
 
 interface IProps {
   fields?: {

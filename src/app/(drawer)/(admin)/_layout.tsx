@@ -1,8 +1,11 @@
 import CustomDrawerContent from "@/components/client/custom/CustomDrawerContent";
-import { FontAwesome } from "@expo/vector-icons";
+import { EModule, useViewAdmin } from "@/hooks/layout/useViewAdmin";
+import { FontAwesome6 } from "@expo/vector-icons";
 import Drawer from "expo-router/drawer";
 
 const AdminLayout = () => {
+  const { isPermit } = useViewAdmin();
+
   return (
     <Drawer
       drawerContent={(props) => (
@@ -12,15 +15,28 @@ const AdminLayout = () => {
         drawerHideStatusBarOnOpen: true,
       }}
     >
-      <Drawer.Screen
-        name="user/ListUser"
-        options={{
-          title: "Manage User",
-          drawerIcon: ({ color }) => (
-            <FontAwesome name="user" size={20} color={color} />
-          ),
-        }}
-      />
+      <Drawer.Protected guard={isPermit(EModule.USER)}>
+        <Drawer.Screen
+          name="user/ListUser"
+          options={{
+            title: "Manage User",
+            drawerIcon: ({ color }) => (
+              <FontAwesome6 name="user" size={16} color={color} />
+            ),
+          }}
+        />
+      </Drawer.Protected>
+      <Drawer.Protected guard={isPermit(EModule.ROLE)}>
+        <Drawer.Screen
+          name="role/ListRole"
+          options={{
+            title: "Manage Role",
+            drawerIcon: ({ color }) => (
+              <FontAwesome6 name="shield" size={16} color={color} />
+            ),
+          }}
+        />
+      </Drawer.Protected>
     </Drawer>
   );
 };

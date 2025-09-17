@@ -70,7 +70,7 @@ const accountSlice = createSlice({
       state.user.track = action?.payload?.track;
     },
     setLogoutAction: (state, action) => {
-      AsyncStorage.removeItem("access_token");
+      AsyncStorage.multiRemove(["access_token", "refresh_token"]);
       state.isAuthenticated = false;
       state.user = user;
     },

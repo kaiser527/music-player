@@ -1,4 +1,4 @@
-import { callFetchTrackById, callFetchTrackPaginate } from "@/services/api";
+import { callFetchTrackPaginate } from "@/services/api";
 import { IMeta, ITrack } from "@/types/backend";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -10,22 +10,14 @@ export const fetchTrack = createAsyncThunk(
   }
 );
 
-export const fetchTrackById = createAsyncThunk(
-  "track/fetchTrackById",
-  async (id: string) => {
-    const response = await callFetchTrackById(id);
-    return response;
-  }
-);
-
 interface IState {
   isFetching: boolean;
   isFetchingSingle: boolean;
   meta: IMeta;
   data: ITrack[];
-  singleTrack: ITrack;
   query: string;
   activeQueueId: string;
+  titleFilter: string;
 }
 
 const initialState: IState = {
@@ -37,20 +29,9 @@ const initialState: IState = {
     totalPages: 0,
   },
   data: [],
-  singleTrack: {
-    id: "",
-    title: "",
-    artwork: "",
-    url: "",
-    user: {
-      id: "",
-      email: "",
-      username: "",
-      image: "",
-    },
-  },
   query: "",
   activeQueueId: "",
+  titleFilter: "",
 };
 
 const trackSlice = createSlice({
@@ -62,6 +43,9 @@ const trackSlice = createSlice({
     },
     setActiveQueueId: (state, action: PayloadAction<string>) => {
       state.activeQueueId = action.payload;
+    },
+    handleChangeTitleFilter: (state, action: PayloadAction<string>) => {
+      state.titleFilter = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -80,48 +64,10 @@ const trackSlice = createSlice({
       state.meta.pageNumber = action.payload.result.pageNumber;
       state.data = action.payload.result.data;
     });
-
-    builder.addCase(fetchTrackById.pending, (state, action) => {
-      state.isFetchingSingle = true;
-      state.singleTrack = {
-        id: "",
-        title: "",
-        artwork: "",
-        url: "",
-        user: {
-          id: "",
-          email: "",
-          username: "",
-          image: "",
-        },
-      };
-    });
-
-    builder.addCase(fetchTrackById.rejected, (state, action) => {
-      state.isFetchingSingle = false;
-      state.singleTrack = {
-        id: "",
-        title: "",
-        artwork: "",
-        url: "",
-        user: {
-          id: "",
-          email: "",
-          username: "",
-          image: "",
-        },
-      };
-    });
-
-    builder.addCase(fetchTrackById.fulfilled, (state, action) => {
-      if (action.payload && action.payload.result) {
-        state.isFetchingSingle = false;
-        state.singleTrack = action.payload.result;
-      }
-    });
   },
 });
 
-export const { handleChangeQuery, setActiveQueueId } = trackSlice.actions;
+export const { handleChangeQuery, setActiveQueueId, handleChangeTitleFilter } =
+  trackSlice.actions;
 
 export default trackSlice.reducer;

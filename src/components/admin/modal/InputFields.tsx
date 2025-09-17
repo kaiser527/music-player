@@ -9,6 +9,8 @@ interface IProps {
     name: string;
     icon: ReactNode;
     placeholder: string;
+    disable?: boolean;
+    fullWidth?: boolean;
   }[];
 }
 
@@ -18,11 +20,15 @@ const InputFields = (props: IProps) => {
       {props.fields &&
         props.fields.length > 0 &&
         props.fields.map((item, index) => (
-          <View style={{ width: "47%" }} key={`input-${index}`}>
+          <View
+            style={{ width: item.fullWidth ? "100%" : "47.7%" }}
+            key={`input-${index}`}
+          >
             <Text style={styles.inputLabel}>{item.name}</Text>
             <View style={styles.inputContainer}>
               {item.icon}
               <TextInput
+                editable={item.disable}
                 ref={item.inputRef}
                 style={styles.input}
                 placeholderTextColor="grey"

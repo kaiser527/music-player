@@ -6,7 +6,7 @@ import {
 import { colors } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
 import { useAppDispatch } from "@/redux/hooks";
-import { handleChangeQuery } from "@/redux/slice/PlaylistSlice";
+import { handleChangeFilter } from "@/redux/slice/PlaylistSlice";
 import { defaultStyles } from "@/styles";
 import { Stack } from "expo-router";
 import React, { useCallback } from "react";
@@ -18,7 +18,7 @@ const PlaylistsScreenLayout = () => {
   const dispatch = useAppDispatch();
 
   const handleChangInput = useCallback((text: string) => {
-    dispatch(handleChangeQuery(text));
+    dispatch(handleChangeFilter(text));
   }, []);
 
   return (

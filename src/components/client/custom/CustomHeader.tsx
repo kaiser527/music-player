@@ -47,6 +47,7 @@ const CustomHeader = (props: IProps) => {
             >
               {getTitleName}
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() =>
                   navigation.dispatch(DrawerActions.toggleDrawer())
                 }

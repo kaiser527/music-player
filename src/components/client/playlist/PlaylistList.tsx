@@ -3,7 +3,7 @@ import { IPlaylist } from "@/types/backend";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { FlatList, FlatListProps } from "react-native";
-import ItemDivider from "../ItemSeparator";
+import ItemDivider from "../../share/ItemSeparator";
 import ListEmpty from "../ListEmpty";
 import PlaylistListItem from "./PlaylistListItem";
 import PlaylistSkeleton from "./PlaylistSkeleton";

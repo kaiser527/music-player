@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 24,
     flex: 1,
-    marginTop: 200,
   },
   title: {
     fontSize: fontSize.lg - 2,

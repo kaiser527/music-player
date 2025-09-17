@@ -8,9 +8,21 @@ export const formatSecondsToMinutes = (seconds: number) => {
   return `${formattedMinutes}:${formattedSeconds}`;
 };
 
-export const generateTracksListId = (
-  trackListName: string,
-  search?: string
+export const colorMethod = (
+  method: "POST" | "PATCH" | "PUT" | "GET" | "DELETE" | string
 ) => {
-  return `${trackListName}${`-${search}` || ""}`;
+  switch (method) {
+    case "POST":
+      return "#2ecc71";
+    case "PATCH":
+      return "#f39c12";
+    case "PUT":
+      return "#9b59b6";
+    case "GET":
+      return "#3498db";
+    case "DELETE":
+      return "#e74c3c";
+    default:
+      return "#7f8c8d";
+  }
 };

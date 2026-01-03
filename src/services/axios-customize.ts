@@ -66,8 +66,7 @@ instance.interceptors.response.use(
         return Promise.reject({ type: "REFRESH_FAILED" });
       }
     }
-
-    return error?.response?.data ?? Promise.reject(error);
+    return Promise.reject(error?.response?.data ?? error);
   }
 );
 

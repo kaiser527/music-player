@@ -12,7 +12,7 @@ interface ITableRow {
 }
 
 interface IProps {
-  table: "USER" | "ROLE" | "TRACK" | "PLAYLIST";
+  table: "USER" | "ROLE" | "TRACK" | "PLAYLIST" | "PERMISSION";
   currentPage: number;
   widthArr: number[];
   rows: ITableRow[];

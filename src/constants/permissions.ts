@@ -58,11 +58,3 @@ export const ALL_PERMISSION = {
     },
   },
 };
-
-export const ALL_MODULES = {
-  PERMISSION: "PERMISSION",
-  ROLE: "ROLE",
-  USER: "USER",
-  TRACK: "TRACK",
-  PLAYLIST: "PLAYLIST",
-};

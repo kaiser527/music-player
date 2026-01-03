@@ -17,7 +17,7 @@ const AdminLayout = () => {
     >
       <Drawer.Protected guard={isPermit(EModule.USER)}>
         <Drawer.Screen
-          name="user/ListUser"
+          name="ListUser"
           options={{
             title: "Manage User",
             drawerIcon: ({ color }) => (
@@ -28,11 +28,22 @@ const AdminLayout = () => {
       </Drawer.Protected>
       <Drawer.Protected guard={isPermit(EModule.ROLE)}>
         <Drawer.Screen
-          name="role/ListRole"
+          name="ListRole"
           options={{
             title: "Manage Role",
             drawerIcon: ({ color }) => (
               <FontAwesome6 name="shield" size={16} color={color} />
+            ),
+          }}
+        />
+      </Drawer.Protected>
+      <Drawer.Protected guard={isPermit(EModule.PERMISSION)}>
+        <Drawer.Screen
+          name="ListPermission"
+          options={{
+            title: "Manage Permission",
+            drawerIcon: ({ color }) => (
+              <FontAwesome6 name="lock" size={16} color={color} />
             ),
           }}
         />

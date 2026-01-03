@@ -19,10 +19,7 @@ export const callLogin = (data: { email: string; password: string }) => {
   return axios.post<IBackendRes<IAccount>>("/api/v1/auth/login", data);
 };
 
-export const callLogout = (data: {
-  accessToken: string;
-  refreshToken: string;
-}) => {
+export const callLogout = (data: { refreshToken: string }) => {
   return axios.post<IBackendRes<void>>("/api/v1/auth/logout", data);
 };
 
@@ -168,6 +165,34 @@ export const callUpdateRole = (
 export const callFetchPermission = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<IPermission>>>(
     `/api/v1/permission?${query}`
+  );
+};
+
+export const callDeletePermission = (id: string) => {
+  return axios.delete<IBackendRes<IPermission>>(`/api/v1/permission/${id}`);
+};
+
+export const callCreatePermission = (data: {
+  name: string;
+  apiPath: string;
+  method: string;
+  module: string;
+}) => {
+  return axios.post<IBackendRes<IPermission>>("/api/v1/permission", data);
+};
+
+export const callUpdatePermission = (
+  id: string,
+  data: {
+    name: string;
+    apiPath: string;
+    method: string;
+    module: string;
+  }
+) => {
+  return axios.patch<IBackendRes<IPermission>>(
+    `/api/v1/permission/${id}`,
+    data
   );
 };
 //----------------------permission----------------------//

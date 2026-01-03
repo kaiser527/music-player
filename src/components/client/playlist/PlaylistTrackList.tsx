@@ -1,11 +1,10 @@
 import { fontSize } from "@/constants/tokens";
-import { REACT_BACKEND_URL, unKnownTrackImage } from "@/constants/utils";
 import { convertTrack } from "@/helpers/convertTrack";
 import { defaultStyles } from "@/styles";
 import { IPlaylist } from "@/types/backend";
-import FastImage from "@d11/react-native-fast-image";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import AutoChangeTrackArtwork from "../AutoChangeTrackArtwork";
 import SearchInput from "../custom/SearchInput";
 import QueueControls from "../QueueControls";
 import TrackList from "../track/TrackList";
@@ -39,14 +38,8 @@ const PlaylistTrackList = (props: IProps) => {
         ListHeaderComponent={
           <View>
             <View style={styles.artworkImageContainer}>
-              <FastImage
-                source={{
-                  uri:
-                    props.playlist.track.length > 0
-                      ? `${REACT_BACKEND_URL}/api/v1/images/track/${props.playlist.track[0].artwork}`
-                      : unKnownTrackImage,
-                  priority: FastImage.priority.high,
-                }}
+              <AutoChangeTrackArtwork
+                tracks={props.playlist.track}
                 style={styles.artworkImage}
               />
             </View>

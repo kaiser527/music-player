@@ -57,7 +57,11 @@ const PlaylistListItem = (props: IProps) => {
             source={{
               uri:
                 props.playlist.track.length > 0
-                  ? `${REACT_BACKEND_URL}/api/v1/images/track/${props.playlist.track[0]?.artwork}`
+                  ? `${REACT_BACKEND_URL}/api/v1/images/track/${
+                      props.playlist.track[
+                        Math.floor(Math.random() * props.playlist.track.length)
+                      ]?.artwork
+                    }`
                   : unKnownTrackImage,
               priority: FastImage.priority.normal,
             }}

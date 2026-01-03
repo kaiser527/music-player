@@ -13,12 +13,12 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
   const userPlaylists: IPlaylist[] = useAppSelector(
     (state) => state.playlist.userPlaylist
   );
-  const isFetchingGlobal: boolean = useAppSelector(
-    (state) => state.playlist.isFetchingGlobal
-  );
-  const isFetchingUser: boolean = useAppSelector(
-    (state) => state.playlist.isFetchingUser
-  );
+  const isFetching = useAppSelector((state) => {
+    if (state.account.isAuthenticated) {
+      return state.playlist.isFetchingUser;
+    }
+    return state.playlist.isFetchingGlobal;
+  });
   const isAuthenticated: boolean = useAppSelector(
     (state) => state.account.isAuthenticated
   );
@@ -44,7 +44,7 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
       };
       if (isFetch) fetchPlaylist();
     },
-    isGlobal ? [isAuthenticated && filter] : []
+    isGlobal ? [filter, isAuthenticated] : []
   );
 
   return {
@@ -55,7 +55,7 @@ export const useGetPlaylistData = (isGlobal: boolean, isFetch: boolean) => {
             ? item.name.toLocaleLowerCase().includes(filter)
             : item
         ),
-    isFetching: isAuthenticated ? isFetchingUser : isFetchingGlobal,
+    isFetching,
     meta: isAuthenticated ? metaUser : {},
   };
 };

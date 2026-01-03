@@ -2,6 +2,7 @@ import PlaylistList from "@/components/client/playlist/PlaylistList";
 import { screenPadding } from "@/constants/tokens";
 import { useScroll } from "@/contexts/ScrollContext";
 import { sortTrack } from "@/helpers/convertTrack";
+import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { useGetPlaylistData } from "@/hooks/data/useGetPlaylistData";
 import { useScrollToTop } from "@/hooks/layout/useScrollToTop";
 import { useTrackQueue } from "@/hooks/track/useTrackQueue";
@@ -16,6 +17,7 @@ const PlaylistsScreen = () => {
   const [convertedPlaylists, setConvertedPlaylists] = useState<IPlaylist[]>([]);
 
   const { isFetching, playlists } = useGetPlaylistData(true, true);
+  const { isAuthenticated } = useGetAccount(false);
   const { activeQueue } = useTrackQueue();
   const { handleScroll } = useScroll();
 
@@ -35,11 +37,10 @@ const PlaylistsScreen = () => {
             : item.track,
       }));
     };
-
     if (playlists && playlists.length > 0)
       convertPlaylist(playlists).then(setConvertedPlaylists);
     else setConvertedPlaylists([]);
-  }, [playlists, activeQueue]);
+  }, [isAuthenticated && playlists, activeQueue]);
 
   const handlePlaylistPress = useCallback(async (playlist: IPlaylist) => {
     router.push({
@@ -60,7 +61,7 @@ const PlaylistsScreen = () => {
         <PlaylistList
           handlePlaylistPress={handlePlaylistPress}
           isFetching={isFetching}
-          playlists={convertedPlaylists}
+          playlists={isAuthenticated ? convertedPlaylists : playlists}
           scrollEnabled={false}
         />
       </ScrollView>

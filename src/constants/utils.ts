@@ -11,3 +11,5 @@ export const unKnownArtistImage = `${REACT_BACKEND_URL}/api/v1/images/user/defau
 export const unKnownTrackImage = `${REACT_BACKEND_URL}/api/v1/images/track/unknown_track.png`;
 
 export const formattedDate = "YYYY-MM-DD";
+
+export const defaultImage = "default-1752056150533.png";

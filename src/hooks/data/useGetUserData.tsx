@@ -15,12 +15,12 @@ export enum EUser {
 export const useGetUserData = (fetchType: EUser, isFetch: boolean) => {
   const artists: IUser[] = useAppSelector((state) => state.user.artists);
   const users: IUser[] = useAppSelector((state) => state.user.users);
-  const isFetchingArtist: boolean = useAppSelector(
-    (state) => state.user.isFetchingArtist
-  );
-  const isFetchingUser: boolean = useAppSelector(
-    (state) => state.user.isFetchingUser
-  );
+  const isFetching = useAppSelector((state) => {
+    if (fetchType === EUser.ARTIST) {
+      return state.user.isFetchingArtist;
+    }
+    return state.user.isFetchingUser;
+  });
   const query: string = useAppSelector((state) => state.user.query);
   const filter: string = useAppSelector((state) => state.user.filter);
   const metaArtist: IMeta = useAppSelector((state) => state.user.metaArtist);
@@ -49,7 +49,7 @@ export const useGetUserData = (fetchType: EUser, isFetch: boolean) => {
 
   const result = {
     data: fetchType === EUser.ARTIST ? artists : users,
-    isFetching: fetchType === EUser.ARTIST ? isFetchingArtist : isFetchingUser,
+    isFetching,
     meta: fetchType === EUser.ARTIST ? metaArtist : metaUser,
     ...(fetchType === EUser.USER && { setQuery }),
   };

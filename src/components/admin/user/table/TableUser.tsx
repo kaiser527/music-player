@@ -166,6 +166,7 @@ const TableUser = () => {
             ) : (
               <ScrollView style={styles.dataWrapper}>
                 <UserTableData
+                  widthArr={state.widthArr}
                   handleDelete={handleDelete}
                   handlePressAction={handlePressAction}
                   currentPage={currentPage}

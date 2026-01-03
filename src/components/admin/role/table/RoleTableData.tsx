@@ -8,11 +8,10 @@ import TableData from "../../table/TableData";
 
 interface IProps {
   currentPage: number;
+  widthArr: number[];
   handleDelete: () => Promise<void>;
   handlePressAction: (id: string, type: "EDIT" | "DELETE") => void;
 }
-
-const widthArr = [50, 150, 200, 120, 180, 180, 150];
 
 const RoleTableData = (props: IProps) => {
   const { roles } = useGetRoleData(false);
@@ -34,7 +33,7 @@ const RoleTableData = (props: IProps) => {
   return (
     <TableData
       currentPage={props.currentPage}
-      widthArr={widthArr}
+      widthArr={props.widthArr}
       rows={rows}
       table="ROLE"
       handleDelete={props.handleDelete}

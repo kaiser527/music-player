@@ -33,14 +33,9 @@ const CustomDrawerContent = (props: CustomDrawerProps) => {
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
-    const tokens = await AsyncStorage.multiGet([
-      "access_token",
-      "refresh_token",
-    ]);
-    const res = await callLogout({
-      accessToken: tokens[0][1] ?? "",
-      refreshToken: tokens[1][1] ?? "",
-    });
+    const refreshToken = await AsyncStorage.getItem("refresh_token");
+    if (!refreshToken) return;
+    const res = await callLogout({ refreshToken });
     if (res.code !== 1000) {
       showMessage({
         message: "Error occurred",
@@ -55,7 +50,9 @@ const CustomDrawerContent = (props: CustomDrawerProps) => {
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props} scrollEnabled={false}>
-        {props.isAdmin && <Text style={styles.title}>Admin Side</Text>}
+        <Text style={styles.title}>
+          {props.isAdmin ? "Admin side" : "Welcome"}
+        </Text>
         {isAuthenticated && (
           <View style={{ padding: top - 25 }}>
             <FastImage

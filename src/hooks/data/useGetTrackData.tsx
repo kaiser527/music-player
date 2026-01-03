@@ -11,6 +11,9 @@ export const useGetTrackData = (isFetch: boolean) => {
   const titleFilter: string = useAppSelector(
     (state) => state.track.titleFilter
   );
+  const isAuthenticated: boolean = useAppSelector(
+    (state) => state.account.isAuthenticated
+  );
 
   const dispatch = useAppDispatch();
 
@@ -20,7 +23,7 @@ export const useGetTrackData = (isFetch: boolean) => {
     };
 
     if (isFetch) fetchListTrack();
-  }, [query]);
+  }, [query, isAuthenticated]);
 
   const setQuery = (value: string) => {
     dispatch(handleChangeQuery(value));

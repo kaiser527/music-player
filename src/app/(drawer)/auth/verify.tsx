@@ -15,8 +15,6 @@ import { showMessage } from "react-native-flash-message";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const inputColor = "rgba(255, 255, 255, 0.75)";
-
 const VerifyScreen = () => {
   const router = useRouter();
 
@@ -103,7 +101,7 @@ const VerifyScreen = () => {
       isForgot: isForgot === 1,
     });
     setIsLoading(false);
-    if (res.code == 1000) {
+    if (res.code === 1000) {
       showMessage({
         message: "Resend code successfully",
         description: "Please check your email",
@@ -121,91 +119,82 @@ const VerifyScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <BackToPreviousIcon />
-      <View style={styles.main}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            {isForgot === 1 ? "Reset" : "Activate"}
-          </Text>
-          <Text style={styles.title}>
-            Your {isForgot === 1 ? "Password" : "Account"}
-          </Text>
+      <View style={styles.card}>
+        <Text style={styles.title}>
+          {isForgot === 1 ? "Reset Password" : "Activate Account"}
+        </Text>
+        <Text style={styles.subtitle}>
+          Enter the verification code sent to your email
+        </Text>
+        <View style={styles.inputWrapper}>
+          <Feather name="key" size={20} color={colors.textMuted} />
+          <TextInput
+            placeholder="Verification code"
+            placeholderTextColor={colors.textMuted}
+            style={styles.input}
+            onChangeText={(t) => (codeRef.current = t)}
+          />
         </View>
-        <View style={styles.content}>
-          <View style={styles.inputWrapper}>
-            <Feather name="key" size={26} color={inputColor} />
-            <TextInput
-              ref={inputCodeRef}
-              style={styles.input}
-              placeholder="Enter your verify code"
-              placeholderTextColor={colors.minimumTrackTintColor}
-              onChangeText={(text) => (codeRef.current = text)}
-            />
-          </View>
-          {isForgot === 1 && (
-            <>
-              <View style={styles.inputWrapper}>
-                <MaterialIcons name="lock" size={26} color={inputColor} />
-                <TextInput
-                  ref={inputPasswordRef}
-                  style={styles.input}
-                  placeholder="Enter your password"
-                  secureTextEntry={!showPassword}
-                  placeholderTextColor={colors.minimumTrackTintColor}
-                  onChangeText={(text) => (passwordRef.current = text)}
+        {isForgot === 1 && (
+          <>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons name="lock" size={20} color={colors.textMuted} />
+              <TextInput
+                placeholder="New password"
+                placeholderTextColor={colors.textMuted}
+                secureTextEntry={!showPassword}
+                style={styles.input}
+                onChangeText={(t) => (passwordRef.current = t)}
+              />
+              <Pressable onPress={() => setShowPassword(!showPassword)}>
+                <Feather
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={18}
+                  color={colors.textMuted}
                 />
-                <Pressable onPress={() => setShowPassword((prev) => !prev)}>
-                  <Feather
-                    name={showPassword ? "eye-off" : "eye"}
-                    size={22}
-                    color={inputColor}
-                  />
-                </Pressable>
-              </View>
-              <View style={styles.inputWrapper}>
-                <MaterialIcons
-                  name="lock-outline"
-                  size={26}
-                  color={inputColor}
-                />
-                <TextInput
-                  ref={inputConfirmPasswordRef}
-                  style={styles.input}
-                  secureTextEntry={!showConfirmPassword}
-                  placeholder="Confirm your password"
-                  placeholderTextColor={colors.minimumTrackTintColor}
-                  onChangeText={(text) => (confirmPasswordRef.current = text)}
-                />
-                <Pressable
-                  onPress={() => setShowConfirmPassword((prev) => !prev)}
-                >
-                  <Feather
-                    name={showConfirmPassword ? "eye-off" : "eye"}
-                    size={22}
-                    color={inputColor}
-                  />
-                </Pressable>
-              </View>
-            </>
-          )}
-          <View style={styles.buttonContainer}>
-            <Pressable
-              style={({ pressed }) => [pressed && styles.textPressed]}
-              onPress={handleConfirm}
-            >
-              <Text style={{ color: inputColor }}>Confirm</Text>
-            </Pressable>
-            {isLoading ? (
-              <LoadingSpinner />
-            ) : (
-              <Pressable
-                style={({ pressed }) => [pressed && styles.textPressed]}
-                onPress={handleResend}
-              >
-                <Text style={{ color: inputColor }}>Resend</Text>
               </Pressable>
-            )}
-          </View>
-        </View>
+            </View>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="lock-outline"
+                size={20}
+                color={colors.textMuted}
+              />
+              <TextInput
+                placeholder="Confirm password"
+                placeholderTextColor={colors.textMuted}
+                secureTextEntry={!showConfirmPassword}
+                style={styles.input}
+                onChangeText={(t) => (confirmPasswordRef.current = t)}
+              />
+              <Pressable
+                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                <Feather
+                  name={showConfirmPassword ? "eye-off" : "eye"}
+                  size={18}
+                  color={colors.textMuted}
+                />
+              </Pressable>
+            </View>
+          </>
+        )}
+        <Pressable
+          style={({ pressed }) => [
+            styles.primaryButton,
+            pressed && styles.primaryButtonPressed,
+          ]}
+          onPress={handleConfirm}
+        >
+          <Text style={styles.primaryButtonText}>Confirm</Text>
+        </Pressable>
+        <Pressable onPress={handleResend} style={styles.resend}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Text style={styles.resendText}>Resend Code</Text>
+          )}
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -213,50 +202,77 @@ const VerifyScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    backgroundColor: "#141414",
     flex: 1,
+    backgroundColor: "#0E0E0E",
+    paddingHorizontal: 20,
   },
-  main: {
-    marginTop: 50,
+
+  card: {
+    marginTop: 80,
+    backgroundColor: "#161616",
+    borderRadius: 20,
+    padding: 24,
   },
-  content: {
-    borderWidth: 1,
-    borderColor: inputColor,
-    borderRadius: 6,
-    padding: 25,
-  },
+
   title: {
-    fontSize: fontSize.lg + 3,
+    fontSize: fontSize.lg,
+    fontWeight: "700",
     color: colors.text,
-    fontWeight: 700,
   },
-  titleContainer: {
-    marginBottom: 23,
+
+  subtitle: {
+    marginTop: 6,
+    marginBottom: 28,
+    color: colors.textMuted,
+    fontSize: fontSize.xs,
   },
+
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    borderColor: inputColor,
-    borderWidth: 1,
-    borderRadius: 17,
-    height: 52,
-    paddingHorizontal: 15,
-    marginBottom: 23,
+    backgroundColor: "#1F1F1F",
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    height: 54,
+    marginBottom: 18,
   },
+
   input: {
-    height: "100%",
-    color: colors.text,
-    marginLeft: 6,
     flex: 1,
+    color: colors.text,
+    marginLeft: 10,
+    fontSize: fontSize.xs + 2,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+
+  primaryButton: {
+    backgroundColor: colors.primary,
+    height: 52,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
   },
-  textPressed: {
+
+  primaryButtonPressed: {
+    backgroundColor: "#d93238",
     transform: [{ scale: 0.97 }],
     opacity: 0.95,
+  },
+
+  primaryButtonText: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: fontSize.xs + 2,
+  },
+
+  resend: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+
+  resendText: {
+    color: colors.textMuted,
+    fontSize: fontSize.xs,
   },
 });
 

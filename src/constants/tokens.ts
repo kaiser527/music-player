@@ -18,3 +18,18 @@ export const fontSize = {
 export const screenPadding = {
   horizontal: 24,
 };
+
+export const roleColors: Record<string, string> = {
+  admin: "#d32029",
+  user: "#52c41a",
+  artist: "#722ed1",
+  tester: "#fadb14",
+};
+
+export const methodColors: Record<string, string> = {
+  GET: "#1677ff",
+  POST: "#52c41a",
+  PATCH: "#fa8c16",
+  PUT: "#722ed1",
+  DELETE: "#d32029",
+};

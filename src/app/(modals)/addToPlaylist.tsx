@@ -8,7 +8,7 @@ import { defaultStyles } from "@/styles";
 import { IPlaylist, ITrack } from "@/types/backend";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import _ from "lodash";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,16 +30,18 @@ const addToPlaylist = () => {
       item.user && !item.track?.some((track) => track.id === parsedTrack.id)
   );
 
-  const handlePlaylistPress = useCallback(async (playlist: IPlaylist) => {
+  const handlePlaylistPress = async (playlist: IPlaylist) => {
     const trackIds = (playlist.track ?? []).map((t) => t.id);
     if (!trackIds.includes(parsedTrack.id)) {
       trackIds.push(parsedTrack.id);
     }
+
     const res = await callUpdatePlaylist(playlist.id ?? "", {
       name: playlist.name,
       action: "ADD",
       trackIds,
     });
+
     if (res.result) {
       router.replace("/");
       if (activeQueue === `playlists-detail-${playlist.id}`) {
@@ -52,7 +54,7 @@ const addToPlaylist = () => {
         type: "danger",
       });
     }
-  }, []);
+  };
 
   const filteredPlaylists = useMemo(() => {
     return availablePlaylists.filter((item) =>

@@ -1,6 +1,6 @@
 import CustomModal from "@/components/admin/modal/CustomModal";
 import { colors } from "@/constants/tokens";
-import { REACT_BACKEND_URL } from "@/constants/utils";
+import { defaultImage, REACT_BACKEND_URL } from "@/constants/utils";
 import { inputValidator, selectValidator } from "@/helpers/validator";
 import { useGetAccount } from "@/hooks/data/useGetAccount";
 import { useGetRoleData } from "@/hooks/data/useGetRoleData";
@@ -128,7 +128,6 @@ const ModalUser = (props: IProps) => {
       return;
     }
     setIsLoading(true);
-    const defaultImage = "default-1752056150533.png";
     const res =
       props.dataInit && props.dataInit.id
         ? await callUpdateUser(props.dataInit.id, {
@@ -153,6 +152,7 @@ const ModalUser = (props: IProps) => {
             accountType,
             roleId: role,
           });
+    setIsLoading(false);
     if (res.result) {
       dispatch(fetchUser(`pageSize=9&pageNumber=${props.currentPage}`));
       handleClose();

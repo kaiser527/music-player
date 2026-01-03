@@ -1,3 +1,4 @@
+import { roleColors } from "@/constants/tokens";
 import { formattedDate } from "@/constants/utils";
 import { EUser, useGetUserData } from "@/hooks/data/useGetUserData";
 import dayjs from "dayjs";
@@ -8,15 +9,9 @@ import TableData from "../../table/TableData";
 interface IProps {
   currentPage: number;
   handleDelete: () => Promise<void>;
+  widthArr: number[];
   handlePressAction: (email: string, type: "EDIT" | "DELETE") => void;
 }
-
-const roleColors: Record<string, string> = {
-  admin: "#d32029",
-  user: "#52c41a",
-  artist: "#722ed1",
-  tester: "#fadb14",
-};
 
 const UserTableData = (props: IProps) => {
   const { data } = useGetUserData(EUser.USER, false);
@@ -38,7 +33,7 @@ const UserTableData = (props: IProps) => {
   return (
     <TableData
       currentPage={props.currentPage}
-      widthArr={[50, 200, 150, 120, 180, 180, 150]}
+      widthArr={props.widthArr}
       rows={rows}
       table="USER"
       handleDelete={props.handleDelete}
